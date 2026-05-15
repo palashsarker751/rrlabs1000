@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | RRLabs</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { background-color: #F8FAFC; }
+    .stat-card { background: white; border: 1px solid #E2E8F0; border-radius: 20px; transition: transform 0.2s; }
+    .stat-card:hover { transform: translateY(-4px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <div id="navbar-placeholder"></div>
+
+  <main class="flex-grow pt-24 pb-12">
+    <div class="max-w-7xl mx-auto px-6">
+      
+      <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4">
+        <div>
+          <h1 class="text-2xl font-black text-slate-900">Merchant Overview</h1>
+          <p class="text-slate-500">Welcome back, Palash. Here's what RRLabs recovered today.</p>
+        </div>
+        <div class="flex gap-3">
+          <button class="bg-white border border-slate-200 px-4 py-2 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-50">Export Data</button>
+          <a href="recovery.html" class="bg-blue-600 px-4 py-2 rounded-xl text-sm font-bold text-white hover:bg-blue-700 transition">View All Recoveries</a>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+        <div class="stat-card p-6">
+          <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Total Recovered</p>
+          <h2 class="text-3xl font-black text-green-600">$4,280.50</h2>
+          <p class="text-xs text-green-500 mt-2 font-bold">↑ 12% from last month</p>
+        </div>
+        <div class="stat-card p-6">
+          <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Success Rate</p>
+          <h2 class="text-3xl font-black text-blue-600">21.4%</h2>
+          <p class="text-xs text-slate-400 mt-2">Gemini AI Optimization: Active</p>
+        </div>
+        <div class="stat-card p-6">
+          <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Pending Carts</p>
+          <h2 class="text-3xl font-black text-slate-900">142</h2>
+          <p class="text-xs text-blue-500 mt-2 font-bold">Sequences running...</p>
+        </div>
+        <div class="stat-card p-6">
+          <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">RRLabs ROI</p>
+          <h2 class="text-3xl font-black text-cyan-600">14.2x</h2>
+          <p class="text-xs text-slate-400 mt-2">After all success fees</p>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2 bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
+          <h3 class="font-bold text-slate-900 mb-6">Revenue Recovery Trends</h3>
+          <canvas id="recoveryChart" height="250"></canvas>
+        </div>
+
+        <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
+          <h3 class="font-bold text-slate-900 mb-6">Recent Success</h3>
+          <div class="space-y-6">
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-bold">W</div>
+              <div>
+                <p class="text-sm font-bold text-slate-900">WhatsApp Recovery</p>
+                <p class="text-xs text-slate-500">Order #8842 • $149.00</p>
+              </div>
+              <span class="ml-auto text-xs font-bold text-green-600">+$149</span>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">E</div>
+              <div>
+                <p class="text-sm font-bold text-slate-900">Email Sequence</p>
+                <p class="text-xs text-slate-500">Order #8839 • $82.50</p>
+              </div>
+              <span class="ml-auto text-xs font-bold text-green-600">+$82</span>
+            </div>
+          </div>
+          <button class="w-full mt-8 py-3 text-sm font-bold text-blue-600 bg-blue-50 rounded-xl hover:bg-blue-100 transition">View History</button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    // Simple Chart.js Integration
+    const ctx = document.getElementById('recoveryChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['May 1', 'May 5', 'May 10', 'May 15'],
+        datasets: [{
+          label: 'Recovered ($)',
+          data: [400, 1200, 800, 1800],
+          borderColor: '#2563EB',
+          backgroundColor: 'rgba(37, 99, 235, 0.1)',
+          fill: true,
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true }, x: { grid: { display: false } } }
+      }
+    });
+  </script>
+</body>
+</html>

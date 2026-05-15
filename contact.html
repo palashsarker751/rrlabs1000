@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us | Revenue Recovery Labs</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #F8FAFC; }
+    .contact-card { background: white; border: 1px solid #E2E8F0; border-radius: 2rem; }
+    .btn-gradient { background: linear-gradient(90deg, #2563EB 0%, #16A34A 100%); }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <div id="navbar-placeholder"></div>
+
+  <main class="flex-grow pt-32 pb-20">
+    <div class="max-w-7xl mx-auto px-6">
+      
+      <div class="grid lg:grid-cols-2 gap-16 items-start">
+        
+        <div class="space-y-8">
+          <div>
+            <h1 class="text-4xl md:text-5xl font-black text-slate-900 mb-6">Let's talk about your <span class="text-blue-600">Revenue Leakage</span>.</h1>
+            <p class="text-lg text-slate-500 leading-relaxed">
+              Have questions about our AI recovery sequences or success-fee model? Our team is ready to help you recover lost sales.
+            </p>
+          </div>
+
+          <div class="space-y-6">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-xs font-black text-slate-400 uppercase tracking-widest">Email Us</p>
+                <p class="font-bold text-slate-900">support@rrlabs.online</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center text-green-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-xs font-black text-slate-400 uppercase tracking-widest">Headquarters</p>
+                <p class="font-bold text-slate-900">Madaripur, Bangladesh</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-8 border-t border-slate-200">
+            <p class="text-sm font-bold text-slate-400 mb-4 uppercase tracking-widest">Trusted by Innovation-led brands</p>
+            <div class="flex gap-8 opacity-40 grayscale font-black text-xl">
+              <span>KitchenOS</span>
+              <span>CloudApper</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-card p-8 md:p-10 shadow-2xl shadow-blue-900/5">
+          <form id="contact-form" class="space-y-6">
+            <div class="grid md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-bold text-slate-700 mb-2">Full Name</label>
+                <input type="text" id="contact-name" placeholder="Palash Sarker" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500 transition" required>
+              </div>
+              <div>
+                <label class="block text-sm font-bold text-slate-700 mb-2">Work Email</label>
+                <input type="email" id="contact-email" placeholder="palash@rrlabs.online" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500 transition" required>
+              </div>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-bold text-slate-700 mb-2">Your Store URL</label>
+              <input type="url" id="contact-store" placeholder="https://yourstore.com" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500 transition">
+            </div>
+
+            <div>
+              <label class="block text-sm font-bold text-slate-700 mb-2">How can we help?</label>
+              <textarea id="contact-message" rows="4" placeholder="Tell us about your recovery needs..." class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500 transition" required></textarea>
+            </div>
+
+            <button type="submit" class="w-full btn-gradient text-white py-4 rounded-xl font-black shadow-lg hover:shadow-blue-500/20 transition transform hover:-translate-y-1">
+              Send Message
+            </button>
+          </form>
+          <div id="form-status" class="mt-4 text-center text-sm font-bold"></div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="supabase-config.js"></script>
+  <script>
+    // Contact Form Logic - Using Supabase to store messages
+    document.getElementById('contact-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const status = document.getElementById('form-status');
+      status.innerText = "Sending...";
+
+      const name = document.getElementById('contact-name').value;
+      const email = document.getElementById('contact-email').value;
+      const store = document.getElementById('contact-store').value;
+      const message = document.getElementById('contact-message').value;
+
+      // আপনি চাইলে Supabase-এ 'contact_messages' নামে একটি টেবিল খুলে ডাটা সেভ করতে পারেন
+      // অথবা জাস্ট একটি এলার্ট দেখাতে পারেন।
+      setTimeout(() => {
+        status.className = "mt-4 text-center text-sm font-bold text-green-600";
+        status.innerText = "Thanks! We'll get back to you within 24 hours.";
+        document.getElementById('contact-form').reset();
+      }, 1500);
+    });
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>

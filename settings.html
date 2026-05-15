@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings | RRLabs</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background-color: #F8FAFC; }
+    .nav-tab-active { color: #2563EB; border-bottom: 2px solid #2563EB; }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <div id="navbar-placeholder"></div>
+
+  <main class="flex-grow pt-24 pb-12">
+    <div class="max-w-4xl mx-auto px-6">
+      
+      <div class="mb-10">
+        <h1 class="text-3xl font-black text-slate-900">Settings</h1>
+        <p class="text-slate-500 font-medium">Configure your recovery engine and store integrations.</p>
+      </div>
+
+      <div class="flex gap-8 border-b border-slate-200 mb-10 overflow-x-auto">
+        <button class="pb-4 text-sm font-bold nav-tab-active whitespace-nowrap">Store Integration</button>
+        <button class="pb-4 text-sm font-bold text-slate-400 hover:text-slate-600 whitespace-nowrap">AI Configuration</button>
+        <button class="pb-4 text-sm font-bold text-slate-400 hover:text-slate-600 whitespace-nowrap">Billing & Plan</button>
+        <button class="pb-4 text-sm font-bold text-slate-400 hover:text-slate-600 whitespace-nowrap">Profile</button>
+      </div>
+
+      <div class="space-y-8">
+        
+        <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
+          <div class="flex items-center justify-between mb-8">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-2xl">⚡</div>
+              <div>
+                <h3 class="font-bold text-slate-900">Webhook Connection</h3>
+                <p class="text-sm text-slate-500">Connect your e-commerce store to RRLabs</p>
+              </div>
+            </div>
+            <span class="px-3 py-1 bg-green-100 text-green-600 text-xs font-black rounded-full uppercase">Connected</span>
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs font-black text-slate-400 uppercase mb-2">Your Webhook URL</label>
+              <div class="flex gap-2">
+                <input type="text" readonly value="https://api.rrlabs.online/v1/webhook/p_77421" 
+                  class="flex-grow px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-600 font-mono">
+                <button class="px-4 py-3 bg-slate-900 text-white rounded-xl text-sm font-bold">Copy</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
+          <h3 class="font-bold text-slate-900 mb-2">WhatsApp Recovery Agent</h3>
+          <p class="text-sm text-slate-500 mb-6">Send automated recovery messages from your own number.</p>
+          
+          <div class="p-6 border-2 border-dashed border-slate-200 rounded-2xl text-center">
+            <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">💬</div>
+            <p class="text-sm font-bold text-slate-700 mb-4">Connect your WhatsApp via QR Code</p>
+            <button class="btn btn-secondary !py-2 !px-6 !text-sm">Scan QR Code</button>
+          </div>
+        </div>
+
+        <div class="pt-8 border-t border-slate-200">
+          <h3 class="font-bold text-red-600 mb-2">Danger Zone</h3>
+          <p class="text-sm text-slate-500 mb-4">Permanently delete your account and all recovery data.</p>
+          <button class="px-6 py-3 border border-red-200 text-red-600 rounded-xl text-sm font-bold hover:bg-red-50 transition">Delete Account</button>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Insights | RRLabs Blog</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50">
+
+  <div id="navbar-placeholder"></div>
+
+  <main class="pt-32 pb-20">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <h1 class="text-5xl font-black text-slate-900 mb-4">The Recovery Journal</h1>
+        <p class="text-slate-500 text-lg">AI-driven insights for modern e-commerce.</p>
+      </div>
+
+      <div id="blog-posts-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div class="animate-pulse bg-white h-80 rounded-3xl"></div>
+        <div class="animate-pulse bg-white h-80 rounded-3xl"></div>
+        <div class="animate-pulse bg-white h-80 rounded-3xl"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="supabase-config.js"></script>
+  <script>
+    async function loadBlogPosts() {
+        const container = document.getElementById('blog-posts-container');
+        
+        // Fetch last 10 posts from Supabase
+        const { data: posts, error } = await supabase
+            .from('blog_posts')
+            .select('*')
+            .order('created_at', { ascending: false })
+            .limit(10);
+
+        if (error) {
+            container.innerHTML = `<p class="text-red-500">Failed to load posts.</p>`;
+            return;
+        }
+
+        container.innerHTML = posts.map(post => `
+            <article class="bg-white rounded-[2rem] overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl transition group">
+              <div class="p-8">
+                <div class="flex items-center gap-3 mb-4">
+                  <span class="text-xs font-black text-blue-600 uppercase tracking-widest">${post.category}</span>
+                  <span class="text-slate-300">•</span>
+                  <span class="text-xs text-slate-400 font-medium">${new Date(post.created_at).toLocaleDateString()}</span>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900 mb-4 group-hover:text-blue-600 transition">${post.title}</h3>
+                <p class="text-slate-500 text-sm leading-relaxed mb-6">${post.excerpt}</p>
+                <a href="post.html?id=${post.id}" class="text-sm font-black text-slate-900 flex items-center gap-2 group-hover:gap-4 transition-all">
+                  Read Article <span>→</span>
+                </a>
+              </div>
+            </article>
+        `).join('');
+    }
+
+    document.addEventListener('DOMContentLoaded', loadBlogPosts);
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>
