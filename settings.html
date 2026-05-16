@@ -1,82 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Settings | RRLabs</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body { background-color: #F8FAFC; }
-    .nav-tab-active { color: #2563EB; border-bottom: 2px solid #2563EB; }
-  </style>
-</head>
-<body class="flex flex-col min-h-screen">
-
-  <div id="navbar-placeholder"></div>
-
-  <main class="flex-grow pt-24 pb-12">
-    <div class="max-w-4xl mx-auto px-6">
-      
-      <div class="mb-10">
-        <h1 class="text-3xl font-black text-slate-900">Settings</h1>
-        <p class="text-slate-500 font-medium">Configure your recovery engine and store integrations.</p>
-      </div>
-
-      <div class="flex gap-8 border-b border-slate-200 mb-10 overflow-x-auto">
-        <button class="pb-4 text-sm font-bold nav-tab-active whitespace-nowrap">Store Integration</button>
-        <button class="pb-4 text-sm font-bold text-slate-400 hover:text-slate-600 whitespace-nowrap">AI Configuration</button>
-        <button class="pb-4 text-sm font-bold text-slate-400 hover:text-slate-600 whitespace-nowrap">Billing & Plan</button>
-        <button class="pb-4 text-sm font-bold text-slate-400 hover:text-slate-600 whitespace-nowrap">Profile</button>
-      </div>
-
-      <div class="space-y-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engine Configuration | Revenue Recovery Labs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #F8FAFC; }
+        .settings-card { background: white; border: 1px solid #F1F5F9; border-radius: 40px; transition: all 0.3s ease; }
+        .sidebar-link.active { background: #F1F5F9; color: #2563EB; border-right: 4px solid #2563EB; }
+        .nav-tab { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; }
+        .nav-tab.active { color: #2563EB; }
+        .nav-tab.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 3px; background: #2563EB; border-radius: 10px; }
         
-        <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
-          <div class="flex items-center justify-between mb-8">
-            <div class="flex items-center gap-4">
-              <div class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-2xl">⚡</div>
-              <div>
-                <h3 class="font-bold text-slate-900">Webhook Connection</h3>
-                <p class="text-sm text-slate-500">Connect your e-commerce store to RRLabs</p>
-              </div>
+        input, textarea { background-color: #F8FAFC !important; border: 1px solid #E2E8F0 !important; border-radius: 20px !important; transition: all 0.2s; }
+        input:focus, textarea:focus { border-color: #2563EB !important; outline: none; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.05); background-color: #fff !important; }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: slideUp 0.4s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .danger-border { border: 1px solid #FEE2E2; background: #FFFBFB; }
+        .custom-scrollbar::-webkit-scrollbar { height: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #E2E8F0; border-radius: 10px; }
+    </style>
+</head>
+<body class="flex min-h-screen">
+
+    <aside class="hidden lg:flex flex-col w-72 bg-white border-r border-slate-100 fixed h-full z-50">
+        <div class="p-8">
+            <a href="dashboard.html" class="flex items-center gap-3 mb-12">
+                <img src="logo.png" alt="RRLabs" class="h-9 w-auto">
+                <div class="flex flex-col">
+                    <span class="font-extrabold text-xs tracking-tight text-slate-900 uppercase leading-none">REVENUE RECOVERY</span>
+                    <span class="text-blue-600 text-[8px] font-black uppercase tracking-[0.4em]">Labs</span>
+                </div>
+            </a>
+            <nav class="space-y-2">
+                <a href="dashboard.html" class="sidebar-link flex items-center gap-3 px-5 py-4 text-[11px] font-bold uppercase tracking-widest text-slate-400 hover:text-blue-600 rounded-2xl transition">Dashboard</a>
+                <a href="analytics.html" class="sidebar-link flex items-center gap-3 px-5 py-4 text-[11px] font-bold uppercase tracking-widest text-slate-400 hover:text-blue-600 rounded-2xl transition">Analytics</a>
+                <a href="records.html" class="sidebar-link flex items-center gap-3 px-5 py-4 text-[11px] font-bold uppercase tracking-widest text-slate-400 hover:text-blue-600 rounded-2xl transition">Recovery Records</a>
+                <a href="settings.html" class="sidebar-link active flex items-center gap-3 px-5 py-4 text-[11px] font-bold uppercase tracking-widest text-blue-600 rounded-2xl transition">Settings</a>
+                <a href="billing.html" class="sidebar-link flex items-center gap-3 px-5 py-4 text-[11px] font-bold uppercase tracking-widest text-slate-400 hover:text-blue-600 rounded-2xl transition">Billing</a>
+            </nav>
+        </div>
+    </aside>
+
+    <main class="flex-grow lg:ml-72 p-8 md:p-12">
+        <header class="mb-12">
+            <span class="text-blue-600 text-[10px] font-black uppercase tracking-[0.3em]">System Architecture</span>
+            <h1 class="text-4xl font-[800] text-slate-900 tracking-tighter mt-2">Engine Settings</h1>
+            <p class="text-slate-500 font-medium text-sm mt-1">Configure webhooks, AI agents, and security protocols.</p>
+        </header>
+
+        <div class="flex gap-10 border-b border-slate-100 mb-12 overflow-x-auto custom-scrollbar">
+            <button onclick="switchTab(this, 'store-tab')" class="nav-tab active pb-5 text-[11px] font-black uppercase tracking-widest whitespace-nowrap">Store Integration</button>
+            <button onclick="switchTab(this, 'ai-tab')" class="nav-tab pb-5 text-[11px] font-black uppercase tracking-widest text-slate-400 whitespace-nowrap">AI Personalization</button>
+            <button onclick="switchTab(this, 'profile-tab')" class="nav-tab pb-5 text-[11px] font-black uppercase tracking-widest text-slate-400 whitespace-nowrap">Security & Profile</button>
+        </div>
+
+        <div class="max-w-4xl">
+            
+            <div id="store-tab" class="tab-content active space-y-8">
+                <section class="settings-card p-10">
+                    <div class="flex items-center justify-between mb-10">
+                        <div class="flex items-center gap-5">
+                            <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-[22px] flex items-center justify-center text-xl font-black italic shadow-inner">W</div>
+                            <div>
+                                <h3 class="font-extrabold text-slate-900 text-base">Webhook Protocol</h3>
+                                <p class="text-[11px] text-slate-400 font-bold uppercase tracking-tight">Real-time store data ingestion</p>
+                            </div>
+                        </div>
+                        <span class="px-4 py-1.5 bg-green-100 text-green-600 text-[10px] font-black rounded-full uppercase tracking-widest">Live</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Universal Webhook Endpoint</label>
+                        <div class="flex flex-col md:flex-row gap-4">
+                            <input type="text" id="webhook-url" readonly value="https://api.rrlabs.online/v1/webhook/palash_sarker_93" 
+                                class="flex-grow px-6 py-4 text-sm font-bold text-slate-500 font-mono italic">
+                            <button onclick="copyWebhook(this)" class="px-8 py-4 bg-slate-900 text-white rounded-[20px] text-[10px] font-black uppercase tracking-widest hover:bg-blue-600 transition-all shadow-xl shadow-slate-200">Copy Link</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="settings-card p-10">
+                    <div class="flex items-center gap-5 mb-10">
+                        <div class="w-14 h-14 bg-green-50 text-green-600 rounded-[22px] flex items-center justify-center text-xl shadow-inner">💬</div>
+                        <div>
+                            <h3 class="font-extrabold text-slate-900 text-base">WhatsApp Agent Pairing</h3>
+                            <p class="text-[11px] text-slate-400 font-bold uppercase tracking-tight">Link your business number via QR</p>
+                        </div>
+                    </div>
+                    
+                    <div class="p-12 border-2 border-dashed border-slate-100 rounded-[40px] text-center bg-slate-50/30" id="qr-container">
+                        <div class="w-20 h-20 bg-white border border-slate-50 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl shadow-sm">📱</div>
+                        <p class="text-sm font-bold text-slate-800 mb-6 tracking-tight">Initialize Secure Pairing Protocol</p>
+                        <button onclick="startQRScan(this)" class="px-10 py-4 bg-white border border-slate-200 text-slate-900 rounded-[20px] text-[10px] font-black uppercase tracking-widest hover:border-blue-600 hover:text-blue-600 transition shadow-sm active:scale-95">Generate QR Code</button>
+                    </div>
+                </section>
             </div>
-            <span class="px-3 py-1 bg-green-100 text-green-600 text-xs font-black rounded-full uppercase">Connected</span>
-          </div>
 
-          <div class="space-y-4">
-            <div>
-              <label class="block text-xs font-black text-slate-400 uppercase mb-2">Your Webhook URL</label>
-              <div class="flex gap-2">
-                <input type="text" readonly value="https://api.rrlabs.online/v1/webhook/p_77421" 
-                  class="flex-grow px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-600 font-mono">
-                <button class="px-4 py-3 bg-slate-900 text-white rounded-xl text-sm font-bold">Copy</button>
-              </div>
+            <div id="ai-tab" class="tab-content space-y-8">
+                <section class="settings-card p-10">
+                    <h3 class="text-[11px] font-black text-blue-600 uppercase tracking-widest mb-10">AI Agent Intelligence</h3>
+                    <div class="space-y-8">
+                        <div>
+                            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-1">System instructions (Gemini 3 Flash)</label>
+                            <textarea id="ai-prompt" class="w-full p-6 text-sm font-bold text-slate-900 leading-relaxed" rows="5">Act as a professional recovery agent for Revenue Recovery Labs. Be helpful, empathetic, and prioritize building trust.</textarea>
+                        </div>
+                        <button onclick="saveAI(this)" class="bg-slate-900 text-white px-10 py-5 rounded-[22px] text-[10px] font-black uppercase tracking-widest hover:bg-blue-600 transition shadow-2xl shadow-blue-100">Save AI Configuration</button>
+                    </div>
+                </section>
             </div>
-          </div>
+
+            <div id="profile-tab" class="tab-content space-y-8">
+                <section class="settings-card p-10">
+                    <h3 class="text-[11px] font-black text-blue-600 uppercase tracking-widest mb-10">Administrative Identity</h3>
+                    <div class="grid md:grid-cols-2 gap-8 mb-10">
+                        <div>
+                            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-1">Full Name</label>
+                            <input type="text" id="user-name" value="Palash Sarker" class="w-full px-6 py-4 text-sm font-bold text-slate-900">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 ml-1">Access Email</label>
+                            <input type="email" id="user-email" value="admin@company.com" class="w-full px-6 py-4 text-sm font-bold text-slate-900">
+                        </div>
+                    </div>
+                    <button onclick="updateProfile(this)" class="bg-slate-900 text-white px-10 py-5 rounded-[22px] text-[10px] font-black uppercase tracking-widest hover:bg-blue-600 transition shadow-2xl shadow-blue-100">Update Identity</button>
+                </section>
+
+                <section class="settings-card p-10 danger-border">
+                    <h3 class="text-[11px] font-black text-red-500 uppercase tracking-widest mb-3">Critical Override</h3>
+                    <p class="text-xs text-slate-500 font-bold mb-8">Permanently terminate the architectural instance. This action is irreversible.</p>
+                    <button onclick="confirmDelete()" class="px-10 py-5 border-2 border-red-100 text-red-600 rounded-[22px] text-[10px] font-black uppercase tracking-widest hover:bg-red-50 transition active:scale-95">Purge All Instance Data</button>
+                </section>
+            </div>
+
         </div>
+    </main>
 
-        <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
-          <h3 class="font-bold text-slate-900 mb-2">WhatsApp Recovery Agent</h3>
-          <p class="text-sm text-slate-500 mb-6">Send automated recovery messages from your own number.</p>
-          
-          <div class="p-6 border-2 border-dashed border-slate-200 rounded-2xl text-center">
-            <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">💬</div>
-            <p class="text-sm font-bold text-slate-700 mb-4">Connect your WhatsApp via QR Code</p>
-            <button class="btn btn-secondary !py-2 !px-6 !text-sm">Scan QR Code</button>
-          </div>
-        </div>
-
-        <div class="pt-8 border-t border-slate-200">
-          <h3 class="font-bold text-red-600 mb-2">Danger Zone</h3>
-          <p class="text-sm text-slate-500 mb-4">Permanently delete your account and all recovery data.</p>
-          <button class="px-6 py-3 border border-red-200 text-red-600 rounded-xl text-sm font-bold hover:bg-red-50 transition">Delete Account</button>
-        </div>
-
-      </div>
-    </div>
-  </main>
-
-  <script src="app.js"></script>
+    <script src="supabase-config.js"></script>
+    <script src="settings.js"></script>
 </body>
 </html>

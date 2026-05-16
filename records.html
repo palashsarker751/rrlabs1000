@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recovery Ledger | Revenue Recovery Labs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #F8FAFC; }
+        .sidebar-link { transition: all 0.3s ease; }
+        .sidebar-link.active { background: #F1F5F9; color: #2563EB; border-right: 4px solid #2563EB; }
+        .table-row:hover { background-color: #F1F5F9; transform: scale(1.001); transition: all 0.2s ease; }
+        .badge { padding: 6px 12px; border-radius: 12px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
+        .badge-success { background: #F0FDF4; color: #16A34A; border: 1px solid #DCFCE7; }
+        .badge-pending { background: #FFFBEB; color: #B45309; border: 1px solid #FEF3C7; }
+        .badge-failed { background: #FEF2F2; color: #EF4444; border: 1px solid #FEE2E2; }
+    </style>
+</head>
+<body class="flex min-h-screen">
+
+    <aside class="hidden lg:flex flex-col w-72 bg-white border-r border-slate-100 fixed h-full z-50">
+        <div class="p-8">
+            <a href="index.html" class="flex items-center gap-3 mb-12">
+                <img src="logo.png" alt="RRLabs Logo" class="h-9 w-auto">
+                <div class="flex flex-col">
+                    <span class="font-extrabold text-xs tracking-tight text-slate-900 uppercase">Recovery Labs</span>
+                    <span class="text-blue-600 text-[8px] font-black uppercase tracking-[0.4em]">SYSTEMS</span>
+                </div>
+            </a>
+            <nav class="space-y-2">
+                <a href="dashboard.html" class="sidebar-link flex items-center gap-3 px-5 py-4 text-[11px] font-bold uppercase tracking-widest text-slate-400 hover:text-blue-600 rounded-2xl">Dashboard</a>
+                <a href="analytics.html" class="sidebar-link flex items-center gap-3 px-5 py-4 text-[11px] font-bold uppercase tracking-widest text-slate-400 hover:text-blue-600 rounded-2xl">Analytics</a>
+                <a href="records.html" class="sidebar-link active flex items-center gap-3 px-5 py-4 text-[11px] font-bold uppercase tracking-widest text-blue-600 rounded-2xl">Recovery Records</a>
+                <a href="settings.html" class="sidebar-link flex items-center gap-3 px-5 py-4 text-[11px] font-bold uppercase tracking-widest text-slate-400 hover:text-blue-600 rounded-2xl">Settings</a>
+                <a href="billing.html" class="sidebar-link flex items-center gap-3 px-5 py-4 text-[11px] font-bold uppercase tracking-widest text-slate-400 hover:text-blue-600 rounded-2xl">Billing</a>
+            </nav>
+        </div>
+        <div class="mt-auto p-8 border-t border-slate-50">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center font-bold text-slate-400">PS</div>
+                <div>
+                    <p class="text-xs font-bold text-slate-900">Palash Sarker</p>
+                    <p class="text-[10px] text-slate-400">Pro Plan</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="flex-grow lg:ml-72 p-8 md:p-12">
+        <header class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+            <div>
+                <span class="text-blue-600 text-[10px] font-black uppercase tracking-[0.3em]">Surveillance Ledger</span>
+                <h1 class="text-4xl font-extrabold text-slate-900 tracking-tighter mt-2">Recovery Records</h1>
+                <p class="text-slate-400 font-medium text-sm mt-1 leading-relaxed">Full audit trail of AI-driven payment recovery protocols.</p>
+            </div>
+            <div class="flex gap-4">
+                <button id="export-csv" class="bg-white border border-slate-100 px-6 py-3 rounded-2xl text-[10px] font-bold uppercase tracking-widest hover:border-blue-600 shadow-sm transition">Export Data</button>
+            </div>
+        </header>
+
+        <div class="bg-white border border-slate-100 rounded-[40px] overflow-hidden shadow-2xl shadow-slate-200/40">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="bg-slate-50/50 border-b border-slate-100">
+                            <th class="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Customer Profile</th>
+                            <th class="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Lost Asset</th>
+                            <th class="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Current Status</th>
+                            <th class="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">Last AI Interaction</th>
+                            <th class="px-10 py-6 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ledger-body" class="divide-y divide-slate-50">
+                        <tr>
+                            <td colspan="5" class="px-10 py-24 text-center">
+                                <p class="text-slate-300 font-bold uppercase text-xs tracking-widest animate-pulse">Initializing Security Protocol & Loading Logs...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="supabase-config.js"></script>
+    <script src="records.js"></script>
+</body>
+</html>

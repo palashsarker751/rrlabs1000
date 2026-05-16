@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Setup | Revenue Recovery Labs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .setup-card { background: white; border: 1px solid #f1f5f9; border-radius: 32px; transition: all 0.3s ease; }
+        .sidebar-link.active { background: #eff6ff; color: #2563eb; border-right: 4px solid #2563eb; }
+        .step-number { width: 32px; height: 32px; background: #0f172a; color: white; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 11px; font-weight: 900; }
+        .gateway-card.selected { border: 2px solid #2563eb !important; background-color: #eff6ff; color: #2563eb; }
+        input, textarea, select { background-color: #f8fafc !important; border: 1px solid #e2e8f0 !important; transition: all 0.2s; outline: none; }
+        input:focus { border-color: #2563eb !important; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.05); }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+    </style>
+</head>
+<body class="flex min-h-screen pb-12">
+
+    <aside class="hidden lg:flex flex-col w-64 bg-white border-r border-slate-100 fixed h-full z-50">
+        <div class="p-6">
+            <a href="/" class="flex items-center gap-3 mb-10">
+                <img src="Rrlabs_Logo_transparent.png" alt="Logo" class="h-8 w-8 rounded-lg">
+                <div class="flex flex-col text-slate-900">
+                    <span class="font-black text-sm tracking-tighter uppercase leading-none">REVENUE RECOVERY</span>
+                    <span class="text-blue-600 text-[8px] font-black uppercase tracking-[0.3em]">Labs</span>
+                </div>
+            </a>
+            <nav class="space-y-1">
+                <a href="dashboard.html" class="sidebar-link flex items-center gap-3 px-4 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-blue-600 rounded-2xl transition italic">Dashboard</a>
+                <a href="setup.html" class="sidebar-link active flex items-center gap-3 px-4 py-4 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-blue-600 rounded-2xl transition italic">Setup AI</a>
+            </nav>
+        </div>
+    </aside>
+
+    <main class="flex-grow lg:ml-64 p-6 md:p-12 max-w-5xl mx-auto">
+        <header class="mb-12">
+            <h1 class="text-4xl font-black text-slate-900 tracking-tight uppercase italic mb-2">System Activation</h1>
+            <p class="text-slate-400 font-medium italic text-sm">Configure your full communication and fintech stack.</p>
+        </header>
+
+        <form id="configForm" class="space-y-8">
+            
+            <section class="setup-card p-10">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="step-number">01</div>
+                    <h2 class="text-lg font-black uppercase italic tracking-tight">Business Identity</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Brand Name</label>
+                        <input type="text" name="brand_name" required placeholder="Revenue Recovery Labs" class="w-full px-5 py-4 rounded-2xl text-[11px] font-bold italic">
+                    </div>
+                    <div>
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Primary Website</label>
+                        <input type="url" name="website_url" required placeholder="https://rrlabs.online" class="w-full px-5 py-4 rounded-2xl text-[11px] font-bold italic">
+                    </div>
+                </div>
+            </section>
+
+            <section class="setup-card p-10">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="step-number">02</div>
+                    <h2 class="text-lg font-black uppercase italic tracking-tight">Communication Infrastructure</h2>
+                </div>
+                
+                <div class="mb-10">
+                    <h3 class="text-[10px] font-black uppercase tracking-widest text-blue-600 mb-6 italic">WhatsApp Business API (Meta)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">WhatsApp Sender Number</label>
+                            <input type="text" name="wa_number" required placeholder="+1234567890" class="w-full px-5 py-4 rounded-2xl text-[11px] font-bold italic">
+                        </div>
+                        <div>
+                            <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">WhatsApp Business Account ID (WABA)</label>
+                            <input type="text" name="waba_id" required placeholder="Meta WABA ID" class="w-full px-5 py-4 rounded-2xl text-[11px] font-bold italic">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">System User Access Token (Permanent)</label>
+                            <textarea name="wa_token" rows="2" required class="w-full px-5 py-4 rounded-2xl text-[11px] font-bold italic" placeholder="EAAB..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-8 border-t border-slate-50">
+                    <h3 class="text-[10px] font-black uppercase tracking-widest text-blue-600 mb-6 italic">Mail Relay Protocol (SMTP/API)</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Sender Email (From Address)</label>
+                            <input type="email" name="sender_email" required placeholder="recovery@yourbrand.com" class="w-full px-5 py-4 rounded-2xl text-[11px] font-bold italic">
+                        </div>
+                        <div>
+                            <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Mail Provider API Key (Optional)</label>
+                            <input type="password" name="mail_api_key" placeholder="SendGrid / Postmark Key" class="w-full px-5 py-4 rounded-2xl text-[11px] font-bold italic">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                            <label class="block text-[8px] font-black text-slate-400 uppercase mb-2">SMTP Host</label>
+                            <input type="text" name="smtp_host" placeholder="smtp.gmail.com" class="w-full px-5 py-4 rounded-2xl text-[10px] font-bold italic">
+                        </div>
+                        <div>
+                            <label class="block text-[8px] font-black text-slate-400 uppercase mb-2">SMTP User</label>
+                            <input type="text" name="smtp_user" placeholder="Username" class="w-full px-5 py-4 rounded-2xl text-[10px] font-bold italic">
+                        </div>
+                        <div>
+                            <label class="block text-[8px] font-black text-slate-400 uppercase mb-2">SMTP Password</label>
+                            <input type="password" name="smtp_pass" placeholder="Password" class="w-full px-5 py-4 rounded-2xl text-[10px] font-bold italic">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="setup-card p-10">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="step-number">03</div>
+                    <h2 class="text-lg font-black uppercase italic tracking-tight">Global Fintech Integration</h2>
+                </div>
+
+                <div class="bg-slate-900 p-6 rounded-[24px] mb-10 flex flex-col md:flex-row justify-between items-center gap-4 border border-blue-500/20">
+                    <div class="flex flex-col">
+                        <span class="text-[8px] font-black text-blue-400 uppercase tracking-[0.2em] mb-1 italic">Master Webhook Endpoint</span>
+                        <code id="webhookUrl" class="text-white font-mono text-[10px] break-all opacity-80">https://kwwefrorbhhtrmbkzkir.supabase.co/functions/v1/payment-handler</code>
+                    </div>
+                    <button type="button" onclick="copyWebhook()" class="bg-blue-600 text-white px-8 py-3 rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-white hover:text-slate-900 transition-all italic shrink-0">Copy URL</button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div id="gatewayList" class="space-y-2 max-h-[500px] overflow-y-auto pr-3 custom-scrollbar">
+                        </div>
+
+                    <div class="lg:col-span-2 bg-slate-50 rounded-[28px] p-8 border border-slate-100 relative">
+                        <div class="mb-8 flex justify-between items-center">
+                            <span id="activeGatewayLabel" class="text-[10px] font-black text-blue-600 uppercase tracking-widest italic">Configuring: Stripe</span>
+                            <input type="hidden" name="active_gateway" id="active_gateway_input" value="Stripe">
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div id="customGatewayNameField" class="md:col-span-2 hidden">
+                                <label class="block text-[8px] font-black text-slate-400 uppercase mb-2">Provider Name</label>
+                                <input type="text" name="custom_provider_name" placeholder="Enter Gateway Name" class="w-full px-5 py-4 rounded-xl text-[11px] font-bold italic">
+                            </div>
+
+                            <div class="md:col-span-2">
+                                <label class="block text-[8px] font-black text-slate-400 uppercase mb-2">Merchant Account ID / MID</label>
+                                <input type="text" name="merchant_id" id="merchant_id" placeholder="MID-XXXXX" class="w-full px-5 py-4 rounded-xl text-[11px] font-bold italic">
+                            </div>
+                            <div>
+                                <label class="block text-[8px] font-black text-slate-400 uppercase mb-2">Public API Key / Client ID</label>
+                                <input type="text" name="api_key" id="api_key" placeholder="pk_live_..." class="w-full px-5 py-4 rounded-xl text-[11px] font-bold italic">
+                            </div>
+                            <div>
+                                <label class="block text-[8px] font-black text-slate-400 uppercase mb-2">Secret Key / API Token</label>
+                                <input type="password" name="api_secret" id="api_secret" placeholder="sk_live_..." class="w-full px-5 py-4 rounded-xl text-[11px] font-bold italic">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-[8px] font-black text-blue-600 uppercase mb-2">Webhook Signing Secret (Critical for Security)</label>
+                                <input type="password" name="webhook_secret" id="webhook_secret" placeholder="whsec_..." class="w-full px-5 py-4 rounded-xl text-[11px] font-bold italic border-blue-100 !bg-blue-50/30">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="setup-card p-10">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="step-number">04</div>
+                    <h2 class="text-lg font-black uppercase italic tracking-tight">AI Personality Matrix</h2>
+                </div>
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2 italic">Recovery Tone</label>
+                        <select name="ai_tone" class="w-full px-5 py-4 rounded-2xl text-[11px] font-bold italic uppercase">
+                            <option value="empathetic">Hyper-Empathetic (Recommended)</option>
+                            <option value="professional">Direct & Professional</option>
+                            <option value="urgency">Urgency-Driven (Scarcity)</option>
+                            <option value="conciliatory">Conciliatory (Discount Focused)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2 italic">Special AI Recovery Prompt/Logic</label>
+                        <textarea name="ai_logic" rows="3" class="w-full px-5 py-4 rounded-2xl text-[11px] font-bold italic" placeholder="e.g. If billing fails 3 times, offer a 15% discount for the first month."></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <button type="submit" id="saveBtn" class="w-full py-7 bg-blue-600 text-white rounded-[32px] text-[13px] font-black uppercase tracking-[0.4em] shadow-2xl shadow-blue-500/40 hover:bg-slate-900 transition-all italic hover:scale-[1.01] active:scale-95">
+                Commit System Configuration →
+            </button>
+        </form>
+    </main>
+
+    <script src="setup.js"></script>
+</body>
+</html>

@@ -3,118 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recovery Analysis | RRLabs</title>
+    <title>Case Analysis | Revenue Recovery Labs</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(226, 232, 240, 0.6); }
-        .timeline-line { width: 2px; background: linear-gradient(to bottom, #3b82f6 0%, #e2e8f0 100%); }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #F8FAFC; }
+        .details-card { background: white; border: 1px solid #F1F5F9; border-radius: 40px; box-shadow: 0 4px 20px -2px rgba(0,0,0,0.02); }
+        .chat-bubble-ai { background: #EFF6FF; color: #1E40AF; border-radius: 24px 24px 24px 8px; border: 1px solid #DBEAFE; }
+        .chat-bubble-user { background: #F8FAFC; color: #475569; border-radius: 24px 24px 8px 24px; border: 1px solid #E2E8F0; }
+        .status-pulse { animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #E2E8F0; border-radius: 10px; }
+        .timeline-dot { width: 12px; height: 12px; background: #2563EB; border-radius: 50%; position: absolute; left: 14px; top: 6px; border: 3px solid white; z-index: 10; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 antialiased pb-20">
+<body class="pb-20">
 
-    <nav class="p-6 max-w-7xl mx-auto flex justify-between items-center">
-        <a href="recovery.html" class="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-slate-400 hover:text-blue-600 transition">
-            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-            Back to Logs
-        </a>
-        <div class="flex items-center gap-3">
-            <span class="px-3 py-1 bg-green-100 text-green-700 text-[10px] font-black uppercase rounded-full">Recovered</span>
-            <span class="text-slate-300">|</span>
-            <span class="text-xs font-bold text-slate-500 underline cursor-pointer">Export CSV</span>
-        </div>
-    </nav>
+    <main class="max-w-7xl mx-auto px-6 py-12">
+        <nav class="mb-12 flex justify-between items-center">
+            <a href="records.html" class="flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-blue-600 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                Back to Ledger
+            </a>
+            <button class="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-blue-600 transition">Download Audit JSON</button>
+        </nav>
 
-    <main class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
-        
-        <div class="lg:col-span-1 space-y-6">
-            <div class="glass p-8 rounded-[32px] shadow-xl shadow-blue-900/5">
-                <h2 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6">Customer Profile</h2>
-                <div class="flex items-center gap-4 mb-8">
-                    <div class="h-14 w-14 bg-blue-600 rounded-2xl flex items-center justify-center text-white font-black text-xl">JD</div>
-                    <div>
-                        <h3 class="font-black text-xl tracking-tight">John Doe</h3>
-                        <p class="text-sm text-slate-500 font-medium">john.doe@example.com</p>
-                    </div>
+        <header class="mb-12 flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8">
+            <div>
+                <div class="flex items-center gap-3 mb-4">
+                    <span id="case-id" class="px-4 py-1.5 bg-slate-900 text-white text-[10px] font-black rounded-full uppercase tracking-widest">Case #LOAD-0000</span>
+                    <span id="case-status" class="px-4 py-1.5 bg-green-100 text-green-600 text-[10px] font-black rounded-full uppercase tracking-widest status-pulse">Recovered</span>
                 </div>
-
-                <div class="space-y-4 pt-6 border-t border-slate-100">
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs font-bold text-slate-400 uppercase">Cart Value</span>
-                        <span class="font-black text-lg text-slate-900">$189.00</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs font-bold text-slate-400 uppercase">Recovery ROI</span>
-                        <span class="font-black text-lg text-blue-600">+1240%</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs font-bold text-slate-400 uppercase">Intent Score</span>
-                        <div class="flex gap-1">
-                            <div class="h-1.5 w-6 bg-blue-600 rounded-full"></div>
-                            <div class="h-1.5 w-6 bg-blue-600 rounded-full"></div>
-                            <div class="h-1.5 w-3 bg-slate-200 rounded-full"></div>
-                        </div>
-                    </div>
+                <h1 id="customer-name" class="text-5xl font-[800] text-slate-900 tracking-tighter">Analyzing...</h1>
+                <p class="text-slate-500 font-medium mt-2">AI Recovery sequence initiated via CloudApper Hook.</p>
+            </div>
+            
+            <div class="flex gap-6 bg-white p-8 rounded-[40px] border border-slate-100 shadow-xl shadow-slate-200/40">
+                <div class="text-center pr-8 border-r border-slate-100">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Recovered</p>
+                    <p id="recovered-value" class="text-3xl font-black text-slate-900 tracking-tight">$0.00</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Intent Score</p>
+                    <p id="intent-score" class="text-3xl font-black text-blue-600 tracking-tight">0%</p>
                 </div>
             </div>
+        </header>
 
-            <div class="bg-slate-900 p-8 rounded-[32px] text-white shadow-2xl">
-                <h2 class="text-[10px] font-black text-blue-400 uppercase tracking-[0.2em] mb-4">Gemini AI Logic</h2>
-                <p class="text-sm leading-relaxed text-slate-300 mb-6">
-                    "Customer exhibited high price sensitivity. Suggested a limited 10% scarcity discount which triggered the final purchase."
-                </p>
-                <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 rounded-xl text-[10px] font-black uppercase tracking-widest">
-                    Model: Flash 3.0
-                </div>
+        <div class="grid lg:grid-cols-3 gap-10">
+            <div class="lg:col-span-1 space-y-8">
+                <section class="details-card p-10">
+                    <h3 class="text-[11px] font-black text-slate-400 uppercase tracking-widest mb-8 border-b border-slate-50 pb-4">Automation Pulse</h3>
+                    <div class="space-y-6" id="pulse-metrics">
+                        <div class="flex justify-between items-center"><span class="text-sm font-bold text-slate-500">Channel</span><span class="px-3 py-1 bg-slate-50 rounded-xl text-xs font-black text-slate-900">WhatsApp</span></div>
+                        <div class="flex justify-between items-center"><span class="text-sm font-bold text-slate-500">Interventions</span><span class="px-3 py-1 bg-slate-50 rounded-xl text-xs font-black text-slate-900">03</span></div>
+                        <div class="flex justify-between items-center"><span class="text-sm font-bold text-slate-500">Discount</span><span class="text-xs font-black text-green-600">YES (10%)</span></div>
+                    </div>
+                </section>
+
+                <section class="details-card p-10 bg-slate-900 text-white relative overflow-hidden">
+                    <h3 class="text-[11px] font-black text-blue-400 uppercase tracking-widest mb-6">Gemini AI Logic</h3>
+                    <p id="ai-logic-note" class="text-sm leading-relaxed text-slate-300 font-medium italic">"Analyzing behavior..."</p>
+                    <div class="mt-8 pt-6 border-t border-white/10 flex items-center justify-between text-[9px] font-black uppercase text-slate-500">
+                        <span>Model: Gemini 3 Flash</span>
+                        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    </div>
+                </section>
             </div>
-        </div>
 
-        <div class="lg:col-span-2">
-            <div class="glass p-8 md:p-12 rounded-[40px] shadow-xl shadow-blue-900/5">
-                <h2 class="text-xs font-black text-slate-900 uppercase tracking-[0.2em] mb-12">Recovery Timeline</h2>
+            <div class="lg:col-span-2 space-y-10">
+                <section class="details-card p-10 h-[500px] flex flex-col shadow-inner">
+                    <h3 class="text-[11px] font-black text-blue-600 uppercase tracking-widest mb-8">AI Engagement Log</h3>
+                    <div id="chat-logs" class="flex-grow space-y-6 overflow-y-auto pr-4 custom-scrollbar"></div>
+                </section>
 
-                <div class="relative space-y-12">
-                    <div class="absolute left-[19px] top-2 bottom-2 timeline-line opacity-20"></div>
+                <section class="details-card p-10">
+                    <h3 class="text-[11px] font-black text-slate-900 uppercase tracking-widest mb-12 text-center">Protocol Timeline</h3>
+                    <div class="relative space-y-12 pl-10" id="timeline-container">
+                        <div class="absolute left-[19px] top-2 bottom-2 w-[2px] bg-slate-100"></div>
+                        </div>
+                </section>
 
-                    <div class="relative flex gap-8">
-                        <div class="h-10 w-10 bg-slate-100 rounded-full flex items-center justify-center shrink-0 z-10 border-4 border-white">
-                            <svg class="h-4 w-4 text-slate-400" fill="currentColor" viewBox="0 0 20 20"><path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/></svg>
-                        </div>
-                        <div>
-                            <p class="text-[10px] font-black text-slate-400 uppercase mb-1">May 15, 2026 • 14:20</p>
-                            <h4 class="font-bold text-slate-900">Cart Abandoned</h4>
-                            <p class="text-sm text-slate-500 mt-1">Items: 1x Professional Subscription, 1x Add-on Bundle.</p>
-                        </div>
-                    </div>
-
-                    <div class="relative flex gap-8">
-                        <div class="h-10 w-10 bg-blue-600 rounded-full flex items-center justify-center shrink-0 z-10 border-4 border-white shadow-lg shadow-blue-500/40">
-                            <svg class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                        </div>
-                        <div class="flex-1 bg-blue-50/50 p-6 rounded-3xl border border-blue-100">
-                            <p class="text-[10px] font-black text-blue-500 uppercase mb-1">AI Intervention • 14:35</p>
-                            <h4 class="font-bold text-slate-900">Personalized Message Sent</h4>
-                            <blockquote class="mt-3 text-sm italic text-slate-600 border-l-2 border-blue-200 pl-4">
-                                "Hey John, noticed you left something behind. Would a 10% founder discount help you cross the finish line?"
-                            </blockquote>
-                        </div>
-                    </div>
-
-                    <div class="relative flex gap-8">
-                        <div class="h-10 w-10 bg-green-500 rounded-full flex items-center justify-center shrink-0 z-10 border-4 border-white shadow-lg shadow-green-500/40">
-                            <svg class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                        </div>
-                        <div>
-                            <p class="text-[10px] font-black text-green-600 uppercase mb-1">Goal Reached • 15:02</p>
-                            <h4 class="font-bold text-slate-900">Revenue Successfully Recovered</h4>
-                            <p class="text-sm text-slate-500 mt-1">Transaction confirmed via Stripe. Invoice #INV-8829.</p>
-                        </div>
-                    </div>
-                </div>
+                <button class="w-full py-6 bg-slate-900 text-white rounded-[32px] text-[11px] font-black uppercase tracking-[0.2em] hover:bg-blue-600 transition shadow-2xl shadow-blue-200">
+                    Send Manual Override Message
+                </button>
             </div>
         </div>
     </main>
 
+    <script src="supabase-config.js"></script>
+    <script src="recovery-detail.js"></script>
 </body>
 </html>

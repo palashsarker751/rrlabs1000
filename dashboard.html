@@ -1,115 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard | RRLabs</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    body { background-color: #F8FAFC; }
-    .stat-card { background: white; border: 1px solid #E2E8F0; border-radius: 20px; transition: transform 0.2s; }
-    .stat-card:hover { transform: translateY(-4px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Dashboard | Revenue Recovery Labs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; overflow-x: hidden; }
+        .stat-card { background: white; border: 1px solid #f1f5f9; border-radius: 32px; transition: all 0.3s ease; }
+        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05); }
+        .sidebar-link.active { background: #eff6ff; color: #2563eb; border-right: 4px solid #2563eb; }
+        input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; filter: invert(0.5); }
+        
+        /* System status pulsing effect */
+        .status-pulse { position: relative; display: flex; height: 8px; width: 8px; }
+        .status-pulse .dot { position: relative; display: inline-flex; border-radius: 9999px; height: 8px; width: 8px; background-color: #22c55e; }
+        .status-pulse .ping { animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite; position: absolute; inline-flex; height: 100%; width: 100%; border-radius: 9999px; background-color: #4ade80; opacity: 0.75; }
+        @keyframes ping { 75%, 100% { transform: scale(2.5); opacity: 0; } }
+    </style>
 </head>
-<body class="flex flex-col min-h-screen">
+<body class="flex min-h-screen">
 
-  <div id="navbar-placeholder"></div>
-
-  <main class="flex-grow pt-24 pb-12">
-    <div class="max-w-7xl mx-auto px-6">
-      
-      <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4">
-        <div>
-          <h1 class="text-2xl font-black text-slate-900">Merchant Overview</h1>
-          <p class="text-slate-500">Welcome back, Palash. Here's what RRLabs recovered today.</p>
-        </div>
-        <div class="flex gap-3">
-          <button class="bg-white border border-slate-200 px-4 py-2 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-50">Export Data</button>
-          <a href="recovery.html" class="bg-blue-600 px-4 py-2 rounded-xl text-sm font-bold text-white hover:bg-blue-700 transition">View All Recoveries</a>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-        <div class="stat-card p-6">
-          <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Total Recovered</p>
-          <h2 class="text-3xl font-black text-green-600">$4,280.50</h2>
-          <p class="text-xs text-green-500 mt-2 font-bold">↑ 12% from last month</p>
-        </div>
-        <div class="stat-card p-6">
-          <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Success Rate</p>
-          <h2 class="text-3xl font-black text-blue-600">21.4%</h2>
-          <p class="text-xs text-slate-400 mt-2">Gemini AI Optimization: Active</p>
-        </div>
-        <div class="stat-card p-6">
-          <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Pending Carts</p>
-          <h2 class="text-3xl font-black text-slate-900">142</h2>
-          <p class="text-xs text-blue-500 mt-2 font-bold">Sequences running...</p>
-        </div>
-        <div class="stat-card p-6">
-          <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">RRLabs ROI</p>
-          <h2 class="text-3xl font-black text-cyan-600">14.2x</h2>
-          <p class="text-xs text-slate-400 mt-2">After all success fees</p>
-        </div>
-      </div>
-
-      <div class="grid lg:grid-cols-3 gap-8">
-        <div class="lg:col-span-2 bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
-          <h3 class="font-bold text-slate-900 mb-6">Revenue Recovery Trends</h3>
-          <canvas id="recoveryChart" height="250"></canvas>
+    <aside class="hidden lg:flex flex-col w-64 bg-white border-r border-slate-100 fixed h-full z-50">
+        <div class="p-6">
+            <a href="/" class="flex items-center gap-3 mb-10">
+                <img src="Rrlabs_Logo_transparent.png" alt="Logo" class="h-8 w-8 rounded-lg">
+                <div class="flex flex-col">
+                    <span class="font-black text-sm tracking-tighter uppercase leading-none text-slate-900">REVENUE RECOVERY</span>
+                    <span class="text-blue-600 text-[8px] font-black uppercase tracking-[0.3em]">Labs</span>
+                </div>
+            </a>
+            <nav class="space-y-1" id="sidebar-menu"></nav>
         </div>
 
-        <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
-          <h3 class="font-bold text-slate-900 mb-6">Recent Success</h3>
-          <div class="space-y-6">
-            <div class="flex items-center gap-4">
-              <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-bold">W</div>
-              <div>
-                <p class="text-sm font-bold text-slate-900">WhatsApp Recovery</p>
-                <p class="text-xs text-slate-500">Order #8842 • $149.00</p>
-              </div>
-              <span class="ml-auto text-xs font-bold text-green-600">+$149</span>
+        <div class="mt-auto p-6 border-t border-slate-50">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-black text-xs shadow-lg shadow-blue-500/20">P</div>
+                <div class="flex flex-col">
+                    <span class="text-[10px] font-black uppercase tracking-tighter text-slate-900">Palash Sarker</span>
+                    <span class="text-[8px] text-slate-400 font-bold uppercase tracking-widest italic">System Architect</span>
+                </div>
             </div>
-            <div class="flex items-center gap-4">
-              <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold">E</div>
-              <div>
-                <p class="text-sm font-bold text-slate-900">Email Sequence</p>
-                <p class="text-xs text-slate-500">Order #8839 • $82.50</p>
-              </div>
-              <span class="ml-auto text-xs font-bold text-green-600">+$82</span>
-            </div>
-          </div>
-          <button class="w-full mt-8 py-3 text-sm font-bold text-blue-600 bg-blue-50 rounded-xl hover:bg-blue-100 transition">View History</button>
+            <button onclick="terminateSession()" class="w-full py-3 text-[9px] font-black uppercase tracking-[0.2em] text-red-500 bg-red-50 rounded-xl hover:bg-red-100 transition italic">Terminate Session</button>
         </div>
-      </div>
+    </aside>
 
-    </div>
-  </main>
+    <main class="flex-grow lg:ml-64 p-6 md:p-10">
+        
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-6">
+            <div>
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-[9px] font-black uppercase tracking-[0.2em] mb-4 italic">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
+                    </span>
+                    Gemini AI Engine: Active
+                </div>
+                <h1 class="text-4xl font-black tracking-tight text-slate-900 uppercase italic leading-none">Merchant Hub</h1>
+            </div>
+            
+            <div class="flex items-center gap-3 bg-white p-2 rounded-2xl border border-slate-100 shadow-sm">
+                <input type="date" id="filterDate" class="text-[10px] font-black uppercase bg-transparent outline-none px-2 text-slate-400">
+                <button id="filterBtn" class="bg-blue-600 text-white px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-blue-700 transition italic">Sync</button>
+            </div>
+        </div>
 
-  <script src="app.js"></script>
-  <script>
-    // Simple Chart.js Integration
-    const ctx = document.getElementById('recoveryChart').getContext('2d');
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: ['May 1', 'May 5', 'May 10', 'May 15'],
-        datasets: [{
-          label: 'Recovered ($)',
-          data: [400, 1200, 800, 1800],
-          borderColor: '#2563EB',
-          backgroundColor: 'rgba(37, 99, 235, 0.1)',
-          fill: true,
-          tension: 0.4
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: { legend: { display: false } },
-        scales: { y: { beginAtZero: true }, x: { grid: { display: false } } }
-      }
-    });
-  </script>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-10">
+            <div class="lg:col-span-3 bg-white border border-blue-50 rounded-[35px] p-2 flex flex-col md:flex-row gap-2 shadow-sm">
+                <div class="flex-1 bg-slate-50/80 rounded-[30px] p-6 flex items-center justify-between border border-transparent hover:border-blue-100 transition">
+                    <div>
+                        <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 italic">Active Package</p>
+                        <h3 id="display-package" class="text-xl font-black text-slate-900 uppercase italic tracking-tighter">Premium Pro</h3>
+                    </div>
+                    <span class="px-3 py-1.5 bg-blue-600 text-white text-[8px] font-black uppercase tracking-widest rounded-lg">Active</span>
+                </div>
+
+                <div class="flex-1 bg-slate-50/80 rounded-[30px] p-6 flex items-center justify-between">
+                    <div>
+                        <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1 italic">System Status</p>
+                        <div class="flex items-center gap-2">
+                            <div class="status-pulse">
+                                <span class="ping"></span>
+                                <span class="dot"></span>
+                            </div>
+                            <h3 class="text-xl font-black text-slate-900 uppercase italic tracking-tighter">Operational</h3>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[7px] font-black text-slate-400 uppercase italic">Uptime</p>
+                        <p class="text-[10px] font-black text-blue-600 italic">99.9%</p>
+                    </div>
+                </div>
+
+                <div class="flex-1 bg-blue-600 rounded-[30px] p-6 flex items-center justify-between text-white shadow-lg shadow-blue-500/10">
+                    <div>
+                        <p class="text-[8px] font-black text-blue-100 uppercase tracking-widest mb-1 italic">Next Payment Date</p>
+                        <h3 id="display-next-date" class="text-xl font-black uppercase italic tracking-tighter">June 01, 2026</h3>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[7px] font-black text-blue-100 uppercase italic">Amount</p>
+                        <p id="display-amount" class="text-xl font-black italic tracking-tighter">$99.00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10" id="stat-grid"></div>
+
+        <div class="grid lg:grid-cols-3 gap-8 mb-10">
+            <div class="lg:col-span-2 bg-white p-10 rounded-[40px] border border-slate-50 shadow-sm">
+                <div class="flex justify-between items-center mb-10">
+                    <h3 class="font-black italic text-lg tracking-tighter uppercase">Revenue Velocity</h3>
+                    <span id="chartLabel" class="text-[9px] font-black uppercase text-blue-600 bg-blue-50 px-3 py-1 rounded-full tracking-widest italic">Live Feed</span>
+                </div>
+                <div class="h-[350px]">
+                    <canvas id="mainChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-white p-10 rounded-[40px] border border-slate-100 shadow-sm flex flex-col justify-between bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-blue-50 via-white to-white">
+                <div>
+                    <h3 class="font-black italic text-lg tracking-tighter mb-2 uppercase">Payout Intelligence</h3>
+                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-8 italic">Automated Settlement Flow</p>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1 italic">Expected Payout</p>
+                            <h2 class="text-4xl font-black text-slate-900 tracking-tighter" id="payout-amount">$0.00</h2>
+                        </div>
+                        <div>
+                            <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1 italic">Settlement Date</p>
+                            <h2 class="text-xl font-black text-blue-600 tracking-tight italic" id="payout-date">Calculating...</h2>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 p-4 bg-white border border-blue-100 rounded-2xl">
+                    <div class="flex justify-between text-[9px] font-black uppercase mb-2">
+                        <span class="text-slate-400">Threshold Progress</span>
+                        <span class="text-blue-600" id="payout-progress-text">0%</span>
+                    </div>
+                    <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                        <div id="payout-bar" class="bg-blue-600 h-full transition-all duration-1000" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white p-10 rounded-[40px] border border-slate-50 shadow-sm mb-10">
+            <div class="flex justify-between items-center mb-8">
+                <h3 class="font-black italic text-lg tracking-tighter uppercase">Recent Interventions</h3>
+                <a href="records.html" class="text-[9px] font-black uppercase text-blue-600 hover:underline italic">View All Records</a>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6" id="transaction-list"></div>
+        </div>
+
+    </main>
+
+    <script src="dashboard.js"></script>
 </body>
 </html>

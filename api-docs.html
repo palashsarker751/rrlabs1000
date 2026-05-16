@@ -1,109 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>API Documentation | RRLabs</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-  <style>
-    body { font-family: 'Inter', sans-serif; background-color: #F8FAFC; }
-    code, pre { font-family: 'Fira Code', monospace; }
-    .sidebar-link-active { background: #EFF6FF; color: #2563EB; border-right: 4px solid #2563EB; }
-    .endpoint-get { background: #DBEAFE; color: #1E40AF; }
-    .endpoint-post { background: #DCFCE7; color: #166534; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation | Revenue Recovery Labs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        code, pre { font-family: 'Fira Code', monospace; }
+        .sidebar-link-active { background: #1e293b; color: #3b82f6; border-right: 4px solid #3b82f6; }
+        .endpoint-post { background: #064e3b; color: #34d399; }
+        .endpoint-get { background: #1e3a8a; color: #60a5fa; }
+        .glass-card { background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(51, 65, 85, 1); backdrop-filter: blur(10px); }
+        /* Smooth Scrolling */
+        html { scroll-behavior: smooth; }
+        pre { position: relative; }
+        .copy-btn { position: absolute; top: 10px; right: 10px; background: #334155; padding: 4px 8px; border-radius: 6px; font-size: 10px; cursor: pointer; }
+        .copy-btn:hover { background: #475569; }
+    </style>
 </head>
 <body class="flex flex-col min-h-screen">
 
-  <div id="navbar-placeholder"></div>
-
-  <div class="flex flex-col md:flex-row max-w-7xl mx-auto w-full pt-20 flex-grow">
-    
-    <aside class="w-full md:w-64 bg-white border-r border-slate-100 p-6 space-y-8 sticky top-20 h-[calc(100vh-80px)] overflow-y-auto">
-      <div>
-        <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">Getting Started</h4>
-        <nav class="space-y-2">
-          <a href="#intro" class="block px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50 rounded-lg">Introduction</a>
-          <a href="#auth" class="block px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50 rounded-lg">Authentication</a>
-        </nav>
-      </div>
-      <div>
-        <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">Endpoints</h4>
-        <nav class="space-y-2">
-          <a href="#webhooks" class="block px-4 py-2 text-sm font-bold sidebar-link-active rounded-lg">Webhooks</a>
-          <a href="#recovery-api" class="block px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50 rounded-lg">Manual Recovery</a>
-          <a href="#status-check" class="block px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50 rounded-lg">Status Check</a>
-        </nav>
-      </div>
-    </aside>
-
-    <main class="flex-grow p-8 md:p-12 overflow-y-auto">
-      
-      <section id="intro" class="mb-16">
-        <h1 class="text-4xl font-black text-slate-900 mb-6">API Documentation</h1>
-        <p class="text-lg text-slate-600 leading-relaxed max-w-3xl">
-          Welcome to the RRLabs API. Our API allows you to programmatically manage abandoned carts, trigger Gemini AI recovery sequences, and track your ROI.
-        </p>
-      </section>
-
-      <section id="webhooks" class="mb-16">
-        <div class="flex items-center gap-3 mb-6">
-          <span class="px-3 py-1 rounded font-black text-xs endpoint-post uppercase">Post</span>
-          <h2 class="text-2xl font-black text-slate-900">Incoming Webhook</h2>
+    <header class="fixed top-0 w-full h-16 glass-card z-50 flex items-center px-8 justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-black">R</div>
+            <span class="font-black text-sm tracking-tighter uppercase">RRLabs <span class="text-blue-500 italic">Docs</span></span>
         </div>
-        <p class="text-slate-600 mb-6">Send abandoned cart data from your store to this endpoint to trigger an automated recovery sequence.</p>
+        <div class="flex gap-4">
+            <a href="admin.html" class="text-xs font-bold text-slate-400 hover:text-white uppercase tracking-widest transition">Admin Panel</a>
+            <a href="#" class="text-xs font-bold bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-700 transition">Get API Key</a>
+        </div>
+    </header>
+
+    <div class="flex flex-col md:flex-row max-w-7xl mx-auto w-full pt-16 flex-grow">
         
-        <div class="bg-slate-900 rounded-2xl p-6 mb-8 shadow-xl">
-          <div class="flex justify-between items-center mb-4">
-            <span class="text-slate-400 text-xs font-bold uppercase tracking-widest">Endpoint URL</span>
-            <span class="text-blue-400 text-xs font-bold">Copy</span>
-          </div>
-          <code class="text-blue-300 text-sm">https://api.rrlabs.online/v1/webhook/{{YOUR_SECRET_KEY}}</code>
-        </div>
+        <aside class="w-full md:w-64 border-r border-slate-800 p-6 space-y-8 sticky top-16 h-[calc(100vh-64px)] overflow-y-auto hidden md:block">
+            <div>
+                <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-4">Core Concepts</h4>
+                <nav class="space-y-1">
+                    <a href="#intro" class="block px-4 py-2 text-sm font-bold text-slate-400 hover:text-white rounded-lg transition">Introduction</a>
+                    <a href="#auth" class="block px-4 py-2 text-sm font-bold text-slate-400 hover:text-white rounded-lg transition">Authentication</a>
+                </nav>
+            </div>
+            <div>
+                <h4 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-4">API Reference</h4>
+                <nav class="space-y-1">
+                    <a href="#webhooks" class="block px-4 py-2 text-sm font-bold sidebar-link-active rounded-lg transition">Recovery Webhook</a>
+                    <a href="#manual-recovery" class="block px-4 py-2 text-sm font-bold text-slate-400 hover:text-white rounded-lg transition">Direct Recovery</a>
+                    <a href="#status" class="block px-4 py-2 text-sm font-bold text-slate-400 hover:text-white rounded-lg transition">Sequence Status</a>
+                </nav>
+            </div>
+        </aside>
 
-        <h4 class="font-bold text-slate-900 mb-4">Request Body (JSON)</h4>
-        <div class="bg-slate-900 rounded-2xl p-6">
-          <pre class="text-green-400 text-sm">
+        <main class="flex-grow p-8 md:p-12 overflow-y-auto">
+            
+            <section id="intro" class="mb-20">
+                <h1 class="text-5xl font-black text-white mb-6 italic tracking-tight">API DOCUMENTATION</h1>
+                <p class="text-lg text-slate-400 leading-relaxed max-w-3xl">
+                    Connect your SaaS, E-commerce, or Cloud Kitchen platform directly to the <span class="text-blue-500 font-bold text-white">RRLabs Engine</span>. Automate abandoned checkout recovery using hyper-personalized Gemini AI sequences.
+                </p>
+            </section>
+
+            <section id="auth" class="mb-20 pt-10 border-t border-slate-800">
+                <h2 class="text-2xl font-black text-white mb-6 uppercase">1. Authentication</h2>
+                <p class="text-slate-400 mb-6">Secure all requests using your Secret API Key in the headers.</p>
+                
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="flex items-center gap-4">
+                        <div class="px-3 py-1 bg-slate-800 rounded font-mono text-[10px] text-blue-400 font-bold uppercase">Header</div>
+                        <code class="text-sm text-slate-200">Authorization: Bearer <span class="text-blue-500">sk_live_xxxxx</span></code>
+                    </div>
+                </div>
+            </section>
+
+            <section id="webhooks" class="mb-20 pt-10 border-t border-slate-800">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="px-3 py-1 rounded font-black text-[10px] endpoint-post uppercase">Post</span>
+                    <h2 class="text-2xl font-black text-white uppercase">2. Incoming Recovery Webhook</h2>
+                </div>
+                <p class="text-slate-400 mb-8">Trigger an automated recovery sequence for an abandoned cart.</p>
+                
+                <div class="bg-black rounded-2xl p-6 mb-8 border border-slate-800">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-slate-500 text-[10px] font-black uppercase tracking-widest">Base Endpoint</span>
+                        <button onclick="copyToClipboard('api-url')" class="text-blue-500 text-[10px] font-black hover:underline uppercase">Copy URL</button>
+                    </div>
+                    <code id="api-url" class="text-blue-400 text-sm">https://api.rrlabs.online/v1/webhook/recovery</code>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <div class="space-y-6">
+                        <h4 class="font-black text-sm text-slate-300 uppercase tracking-widest">Payload Definition</h4>
+                        <ul class="space-y-4 text-sm">
+                            <li class="flex justify-between border-b border-slate-800 pb-2">
+                                <span class="font-bold text-blue-400">customer_name</span>
+                                <span class="text-slate-500 italic">String (Required)</span>
+                            </li>
+                            <li class="flex justify-between border-b border-slate-800 pb-2">
+                                <span class="font-bold text-blue-400">email</span>
+                                <span class="text-slate-500 italic">String (Required)</span>
+                            </li>
+                            <li class="flex justify-between border-b border-slate-800 pb-2">
+                                <span class="font-bold text-blue-400">cart_value</span>
+                                <span class="text-slate-500 italic">Number</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="glass-card rounded-2xl overflow-hidden">
+                        <div class="bg-slate-800 px-4 py-2 flex justify-between">
+                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">JSON Payload</span>
+                            <span class="text-[10px] text-green-500 font-bold uppercase">Success Example</span>
+                        </div>
+                        <pre class="p-6 text-green-400 text-xs leading-relaxed overflow-x-auto">
 {
   "customer_name": "Rahat Karim",
   "email": "rahat@example.com",
   "phone": "+8801700000000",
   "cart_value": 149.50,
   "currency": "USD",
-  "items": [
-    { "id": "p1", "name": "Wireless Headphones", "price": 149.50 }
-  ],
-  "checkout_url": "https://yourstore.com/checkout/re-8842"
+  "checkout_url": "https://rrlabs.online/pay/8842"
 }</pre>
-        </div>
-      </section>
+                    </div>
+                </div>
+            </section>
 
-      <section id="auth" class="mb-16 pt-8 border-t border-slate-100">
-        <h2 class="text-2xl font-black text-slate-900 mb-6">Authentication</h2>
-        <p class="text-slate-600 mb-6">All API requests must include your API Key in the request header.</p>
-        <div class="bg-white border border-slate-200 rounded-2xl p-6">
-          <div class="flex items-center gap-4">
-            <div class="px-3 py-1 bg-slate-100 rounded font-mono text-xs text-slate-600">Authorization</div>
-            <div class="text-sm font-bold text-slate-400">Bearer {{YOUR_API_KEY}}</div>
-          </div>
-        </div>
-      </section>
+            <section id="playground" class="mb-20 p-8 rounded-[2rem] bg-gradient-to-br from-blue-900/40 to-slate-900 border border-blue-500/30">
+                <h3 class="text-2xl font-black text-white mb-2 italic">API PLAYGROUND</h3>
+                <p class="text-slate-400 text-sm mb-6 uppercase tracking-widest font-bold">Test the engine in real-time</p>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <input type="text" id="test-email" placeholder="Customer Email" class="w-full bg-slate-900 border border-slate-700 p-3 rounded-xl text-sm focus:border-blue-500 outline-none">
+                        <button onclick="testWebhook()" id="test-btn" class="w-full bg-blue-600 text-white py-3 rounded-xl font-black text-[10px] uppercase tracking-[0.2em] hover:bg-blue-500 transition">Execute Test Request</button>
+                    </div>
+                    <div id="test-response" class="bg-black/50 rounded-xl p-4 font-mono text-[10px] text-slate-500 border border-slate-800">
+                        // Response will appear here...
+                    </div>
+                </div>
+            </section>
 
-      <div class="bg-blue-600 rounded-[2rem] p-10 text-white flex flex-col md:flex-row items-center justify-between gap-6">
-        <div>
-          <h3 class="text-xl font-bold">Stuck on Integration?</h3>
-          <p class="opacity-80">Our engineering team is ready to help you connect your stack.</p>
-        </div>
-        <a href="mailto:support@rrlabs.online" class="bg-white text-blue-600 px-6 py-3 rounded-xl font-bold">Contact Support</a>
-      </div>
+            <div class="bg-white p-10 rounded-[2.5rem] flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl shadow-blue-500/10">
+                <div>
+                    <h3 class="text-2xl font-black text-slate-900 tracking-tighter">Need a Custom Integration?</h3>
+                    <p class="text-slate-500 font-medium italic">Our senior architects are available for direct implementation help.</p>
+                </div>
+                <a href="mailto:support@rrlabs.online" class="bg-blue-600 text-white px-8 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-blue-600/30 hover:scale-105 transition-all">Direct Engineering Line</a>
+            </div>
 
-    </main>
-  </div>
+        </main>
+    </div>
 
-  <div id="footer-placeholder"></div>
-
-  <script src="app.js"></script>
+    <script src="api-docs-engine.js"></script>
 </body>
 </html>

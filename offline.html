@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connection Lost | Revenue Recovery Labs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; overflow: hidden; }
+        .glitch-text { text-shadow: 2px 0 #3b82f6, -2px 0 #ef4444; }
+        .connection-grid { background-size: 30px 30px; background-image: radial-gradient(circle, #e2e8f0 1px, transparent 1px); }
+        .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.5); }
+        .scan-line { height: 100vh; width: 100%; background: linear-gradient(to bottom, transparent, rgba(59, 130, 246, 0.05), transparent); position: absolute; top: -100%; animation: scan 3s linear infinite; }
+        @keyframes scan { 0% { top: -100%; } 100% { top: 100%; } }
+        
+        /* Dynamic Status Pulse */
+        .status-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+        .status-standby { background-color: #cbd5e1; box-shadow: 0 0 0 rgba(203, 213, 225, 0.4); }
+        .status-online { background-color: #22c55e; box-shadow: 0 0 10px #22c55e; animation: pulse-green 2s infinite; }
+        @keyframes pulse-green { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
+    </style>
+</head>
+<body class="connection-grid flex items-center justify-center min-h-screen p-6 relative">
+    
+    <div class="scan-line"></div>
+
+    <div class="max-w-md w-full glass-panel p-12 rounded-[48px] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] relative z-10 text-center">
+        <div class="flex justify-center mb-10">
+            <div class="relative">
+                <div class="w-24 h-24 bg-white rounded-[32px] shadow-xl flex items-center justify-center border border-slate-100 overflow-hidden">
+                    <img src="Rrlabs_Logo_transparent.png" alt="RRLabs" class="h-12 w-12 grayscale opacity-50 blur-[0.5px]" id="logo">
+                </div>
+                <span class="absolute -top-2 -right-2 flex h-6 w-6" id="status-badge">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-6 w-6 bg-red-500 border-4 border-white"></span>
+                </span>
+            </div>
+        </div>
+
+        <div class="space-y-4 mb-10">
+            <h1 class="text-3xl font-black tracking-tighter text-slate-900 uppercase italic leading-none" id="main-title">
+                Protocol <span class="text-red-600">Interrupted</span>
+            </h1>
+            <p class="text-slate-500 font-medium text-sm leading-relaxed italic" id="status-desc">
+                Our recovery nodes cannot detect your local uplink. The system is standing by to resume capture once synchronization is restored.
+            </p>
+        </div>
+
+        <div class="space-y-3">
+            <button id="retry-btn" onclick="window.location.reload()" class="group w-full bg-slate-900 text-white py-5 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] hover:bg-blue-600 transition-all duration-500 shadow-xl shadow-slate-900/20 italic flex items-center justify-center gap-2">
+                <span id="btn-text">Re-establish Link</span>
+                <span class="group-hover:translate-x-1 transition-transform">→</span>
+            </button>
+            
+            <div class="flex items-center justify-center gap-4 pt-4">
+                <div class="flex items-center gap-2">
+                    <span class="status-dot status-standby" id="node-auth"></span>
+                    <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest italic">Auth Node</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="status-dot status-standby" id="node-api"></span>
+                    <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest italic">API Node</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-12 pt-8 border-t border-slate-100">
+            <div class="flex items-center justify-center gap-2 mb-1">
+                <span class="font-black text-[10px] text-slate-900 uppercase tracking-widest">RRLabs Sentinel v2.0</span>
+            </div>
+            <p class="text-[10px] text-slate-400 font-medium italic">
+                Architect: Palash Sarker | Madaripur, BD
+            </p>
+        </div>
+    </div>
+
+    <div class="absolute bottom-10 left-10 hidden lg:block">
+        <div id="bg-text" class="text-[80px] font-black text-slate-100 select-none uppercase tracking-tighter leading-none italic">OFFLINE</div>
+    </div>
+
+    <script src="offline.js"></script>
+</body>
+</html>

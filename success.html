@@ -3,74 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Success | Revenue Recovery Labs</title>
+    <title>Protocol Active | Revenue Recovery Labs</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .glass-container { 
-            background: rgba(255, 255, 255, 0.8); 
-            backdrop-filter: blur(16px); 
-            border: 1px solid rgba(226, 232, 240, 0.5); 
+        body { background-color: #f8fafc; }
+        .success-glow {
+            box-shadow: 0 0 50px rgba(37, 99, 235, 0.2), 0 0 100px rgba(16, 185, 129, 0.1);
         }
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+        .confetti-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #2563eb;
+            border-radius: 50%;
+            opacity: 0.3;
         }
-        .animate-float { animation: float 3s ease-in-out infinite; }
+        @keyframes drift {
+            from { transform: translateY(-100vh) rotate(0deg); }
+            to { transform: translateY(100vh) rotate(360deg); }
+        }
     </style>
 </head>
-<body class="bg-slate-50 min-h-screen flex items-center justify-center p-6 antialiased">
+<body class="min-h-screen flex items-center justify-center p-6 antialiased overflow-hidden">
 
-    <div class="max-w-xl w-full">
-        <div class="glass-container rounded-[48px] p-10 md:p-16 shadow-2xl shadow-blue-900/10 text-center relative overflow-hidden">
+    <div class="confetti-dot" style="left: 10%; top: -10%; animation: drift 5s linear infinite;"></div>
+    <div class="confetti-dot" style="left: 80%; top: -20%; animation: drift 7s linear infinite; background: #10b981;"></div>
+    <div class="confetti-dot" style="left: 50%; top: -5%; animation: drift 6s linear infinite; background: #6366f1;"></div>
+
+    <div class="max-w-2xl w-full relative z-10">
+        <div class="glass rounded-[56px] p-12 md:p-20 text-center relative overflow-hidden success-glow animate-reveal">
             
-            <div class="absolute -top-24 -right-24 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl"></div>
-            <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-blue-600/10 rounded-full blur-3xl"></div>
-
-            <div class="relative mb-10">
-                <div class="h-24 w-24 bg-blue-600 rounded-[32px] flex items-center justify-center mx-auto shadow-2xl shadow-blue-500/40 animate-float">
-                    <svg class="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-                    </svg>
+            <div class="flex justify-center mb-12">
+                <div class="relative group">
+                    <div class="h-28 w-28 bg-slate-900 rounded-[40px] flex items-center justify-center shadow-2xl transition-transform duration-500 group-hover:scale-110">
+                        <svg class="h-14 w-14 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="absolute inset-0 border-2 border-dashed border-blue-200 rounded-[40px] animate-[spin_10s_linear_infinite]"></div>
                 </div>
             </div>
 
-            <h1 class="text-4xl md:text-5xl font-black tracking-tighter text-slate-900 mb-4">
-                System <span class="text-blue-600">Ready.</span>
-            </h1>
-            <p class="text-slate-500 font-medium leading-relaxed mb-10">
-                Your account is now active. Gemini AI is ready to start recovering your abandoned revenue. Your dashboard is now fully unlocked.
-            </p>
+            <div class="space-y-4 mb-10">
+                <h1 class="text-4xl md:text-6xl font-heavy text-slate-900 leading-tight">
+                    Protocol <span class="text-blue-600">Initiated.</span>
+                </h1>
+                <p class="text-slate-500 font-medium text-lg italic leading-relaxed px-4">
+                    Your infrastructure is now synchronized with RRLabs. Gemini AI has begun scanning for recovery opportunities in your funnel.
+                </p>
+            </div>
 
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="admin.html" class="bg-slate-900 text-white px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/10">
-                    Go to Dashboard
+            <div class="flex flex-col sm:flex-row gap-5 justify-center mb-12">
+                <a href="dashboard.html" class="btn-base btn-primary px-10 py-5 text-sm">
+                    Access Dashboard <span>→</span>
                 </a>
-                <a href="api-docs.html" class="bg-white border border-slate-200 text-slate-600 px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-50 transition-all">
-                    View API Docs
+                <a href="setup.html" class="btn-base btn-outline px-10 py-5 text-sm">
+                    Refine AI Logic
                 </a>
             </div>
 
-            <div class="mt-12 pt-8 border-t border-slate-100">
-                <div class="flex items-center justify-center gap-6">
-                    <div class="text-left">
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Status</p>
-                        <p class="text-xs font-bold text-green-600 uppercase">Live & Encrypted</p>
+            <div class="pt-10 border-t border-slate-100 grid grid-cols-2 gap-8">
+                <div class="text-center">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-ultra mb-2">Network Status</p>
+                    <div class="flex items-center justify-center gap-2">
+                        <span class="h-2 w-2 bg-green-500 rounded-full animate-pulse"></span>
+                        <span class="text-[11px] font-heavy text-slate-900">Live Encryption</span>
                     </div>
-                    <div class="h-8 w-[1px] bg-slate-100"></div>
-                    <div class="text-left">
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Architecture</p>
-                        <p class="text-xs font-bold text-slate-900 uppercase">v1.0.4-Stable</p>
-                    </div>
+                </div>
+                <div class="text-center">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-ultra mb-2">Node Assignment</p>
+                    <span class="text-[11px] font-heavy text-blue-600">Cluster-Alpha-26</span>
                 </div>
             </div>
         </div>
 
-        <p class="text-center mt-8 text-sm font-bold text-slate-400">
-            Need help? <a href="contact.html" class="text-blue-600 hover:underline">Contact Architecture Support</a>
-        </p>
+        <div class="text-center mt-12">
+            <p class="text-[10px] font-black text-slate-300 uppercase tracking-[0.3em] mb-3 italic">
+                Architected & Secured by Palash Sarker
+            </p>
+            <div class="flex justify-center gap-6 opacity-30">
+                <span class="text-[9px] font-black uppercase">Stripe Certified</span>
+                <span class="text-[9px] font-black uppercase">SSL-AES 256</span>
+                <span class="text-[9px] font-black uppercase">Madaripur, BD</span>
+            </div>
+        </div>
     </div>
 
 </body>

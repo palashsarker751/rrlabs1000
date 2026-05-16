@@ -1,0 +1,32 @@
+# ==========================================
+# Robots.txt for Revenue Recovery Labs (RRLabs)
+# Optimized for SaaS Privacy & SEO
+# ==========================================
+
+User-agent: *
+
+# --- Allow Public Pages ---
+Allow: /
+Allow: /blog.html
+Allow: /post.html
+Allow: /auth.html
+
+# --- Disallow Private/Sensitive App Pages ---
+# ড্যাশবোর্ড এবং ইন্টারনাল টুলস ইন্ডেক্স হওয়া বন্ধ করবে
+Disallow: /dashboard.html
+Disallow: /analytics.html
+Disallow: /setup.html
+Disallow: /config.html
+Disallow: /billing.html
+Disallow: /admin/
+Disallow: /api/
+
+# --- Prevent Crawling of Temp Files ---
+Disallow: /*?id=* # যদি কোনো নির্দিষ্ট ডাইনামিক আইডি ইন্ডেক্স না করতে চান
+Disallow: /temp/
+
+# --- Sitemap Location ---
+Sitemap: https://rrlabs.online/sitemap.xml
+
+# --- Crawl-delay for high traffic (Optional) ---
+# Crawl-delay: 10
