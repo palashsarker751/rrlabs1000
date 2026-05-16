@@ -3,38 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>Revenue Recovery Labs | Gemini AI Abandoned Cart Recovery</title>
-    <meta name="title" content="Revenue Recovery Labs | Gemini AI Abandoned Cart Recovery">
-    <meta name="description" content="Recover 23% of abandoned carts with hyper-personalized AI sequences.">
-
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://rrlabs.online/">
-    <meta property="og:title" content="Revenue Recovery Labs | Gemini AI">
-    <meta property="og:description" content="Automate your revenue recovery with Gemini AI. 14-day free trial.">
-    <meta property="og:image" content="https://rrlabs.online/Rrlabs_Logo_transparent.png">
-
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:title" content="Revenue Recovery Labs">
-    <meta property="twitter:description" content="Recover lost revenue automatically.">
-    <meta property="twitter:image" content="https://rrlabs.online/Rrlabs_Logo_transparent.png">
     
-    <meta name="theme-color" content="#2563eb">
-    <link rel="manifest" href="data:application/manifest+json;base64,ewogICJuYW1lIjogIlJldmVudWUgUmVjb3ZlcnkgTGFicyIsCiAgInNob3J0X25hbWUiOiAiUlJMYWJzIiwKICAic3RhcnRfdXJsIjogIi8iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmZmZmZmYiLAogICJ0aGVtZV9jb2xvciI6ICIjMjU2M2ViIiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9pLmliYi5jby9tYnlSM2p2L2xvZ28ucG5nIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciCiAgICB9CiAgXQp9">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; overflow-x: hidden; }
         .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.4); }
-        .hero-gradient { background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.1), transparent); }
-        .mobile-menu { display: none; }
-        .mobile-menu.active { display: block; animation: slideDown 0.3s ease-out; }
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        #pwa-banner { display: none; }
-        #pwa-banner.show { display: block; }
-        .pricing-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .pricing-card:hover { transform: translateY(-10px); }
+        .hero-gradient { background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.15), transparent); }
+        .pricing-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); height: 100%; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
+        .pricing-card:hover { transform: translateY(-10px); border-color: #2563eb; box-shadow: 0 20px 40px rgba(37, 99, 235, 0.1); }
+        
+        /* Admin Specific */
+        .admin-border { border: 2px dashed #ef4444 !important; }
+        .admin-badge { position: absolute; top: -10px; right: 10px; background: #ef4444; color: white; font-size: 8px; padding: 2px 6px; border-radius: 4px; font-weight: 900; z-index: 20; }
+        
+        /* Role Control - Hidden by default to prevent flickering */
+        [data-role] { display: none; } 
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 antialiased hero-gradient">
@@ -42,374 +28,175 @@
     <nav class="fixed top-0 left-0 right-0 z-[100] px-6 py-4">
         <div class="max-w-7xl mx-auto glass rounded-2xl px-5 py-3 flex justify-between items-center shadow-xl shadow-blue-900/5">
             <a href="/" class="flex items-center gap-3">
-                <img src="Rrlabs_Logo_transparent.png" alt="RRLABS Logo" class="h-10 w-10 rounded-xl object-contain">
+                <img src="logo.png" alt="RRLABS" class="h-10 w-10 rounded-xl object-contain">
                 <div class="flex flex-col">
-                    <span class="font-black text-lg tracking-tighter leading-none">REVENUE RECOVERY</span>
+                    <span class="font-black text-lg tracking-tighter leading-none uppercase italic">REVENUE RECOVERY</span>
                     <span class="text-blue-600 text-[10px] font-black uppercase tracking-[0.3em]">Labs</span>
                 </div>
             </a>
-
-            <div class="hidden lg:flex items-center gap-8" id="desktop-links"></div>
-
-            <div class="flex items-center gap-3">
-                <div id="auth-buttons" class="hidden lg:block"></div>
-                <button id="menu-toggle" class="p-2 bg-slate-100 rounded-xl hover:bg-blue-50 hover:text-blue-600 transition">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 8h16M4 16h16"></path></svg>
-                </button>
-            </div>
-        </div>
-
-        <div id="mobile-menu" class="mobile-menu absolute top-full left-6 right-6 mt-3 glass rounded-[32px] p-8 shadow-2xl border border-white">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-10" id="menu-grid"></div>
+            <div id="auth-buttons" class="flex items-center gap-3">
+                </div>
         </div>
     </nav>
 
-    <header class="pt-48 pb-20 px-6 max-w-7xl mx-auto text-center">
-        <div class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-full text-[10px] font-black uppercase tracking-widest mb-8 animate-pulse">
+    <header data-role="public" class="pt-48 pb-20 px-6 max-w-7xl mx-auto text-center">
+        <div class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-full text-[10px] font-black uppercase tracking-widest mb-8">
             🚀 14-Day Free Trial Available
         </div>
-        <h1 class="text-5xl md:text-8xl font-black tracking-tighter mb-6 leading-[0.9]">
-            Recover up to 23% <br> of <span class="text-blue-600 underline decoration-blue-100 italic text-nowrap">Abandoned Carts</span>
+        <h1 class="text-5xl md:text-8xl font-black tracking-tighter mb-6 leading-[0.9] italic uppercase">
+            Recover <span class="text-blue-600 underline decoration-blue-100">23%</span> <br> of Lost Orders
         </h1>
-        <p class="text-lg md:text-xl text-slate-500 max-w-2xl mx-auto mb-10 font-medium">
-            Hyper-personalized WhatsApp & Email recovery sequences powered by **Gemini AI**. Automated. High-conversion. Zero effort.
+        <p class="text-lg md:text-xl text-slate-500 max-w-2xl mx-auto mb-10 font-medium italic">
+            Automated WhatsApp & Email recovery sequences powered by **Gemini AI**. Hyper-personalized messages that actually convert.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <button onclick="toggleAuth()" class="bg-blue-600 text-white px-10 py-5 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-blue-700 transition shadow-2xl shadow-blue-500/40">Get Started Free</button>
-            <a href="#calculator" class="glass px-10 py-5 rounded-2xl font-black text-xs uppercase tracking-widest flex items-center gap-2 justify-center">See How Much You're Losing →</a>
+            <button onclick="loginAs('client')" class="bg-blue-600 text-white px-10 py-5 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-blue-700 transition shadow-2xl shadow-blue-500/40">Get Started Free</button>
+            <a href="#pricing" class="glass px-10 py-5 rounded-2xl font-black text-xs uppercase tracking-widest flex items-center gap-2 justify-center">View Tiers ↓</a>
         </div>
-        <p class="mt-8 text-[10px] text-slate-400 font-black uppercase tracking-widest italic">No credit card required • 14 days free • Cancel anytime</p>
     </header>
 
-    <section class="py-24 px-6 max-w-7xl mx-auto">
-        <div class="text-center mb-16">
-            <span class="text-blue-600 font-black text-[10px] uppercase tracking-[0.3em]">The complete AI-powered recovery platform</span>
-            <h2 class="text-4xl font-black tracking-tight mt-2 italic">Why RRLabs Works</h2>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="glass p-10 rounded-[40px] border-white">
-                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-6 text-xl font-black">🤖</div>
-                <h3 class="font-black text-xl mb-4 italic">AI Personalization</h3>
-                <p class="text-sm text-slate-500 font-medium leading-relaxed">Powered by Google Gemini for unique message crafting. Each recovery sequence is hyper-personalized based on cart value and behavior patterns.</p>
+    <header data-role="private" class="pt-48 pb-10 px-6 max-w-7xl mx-auto">
+        <div class="glass p-10 rounded-[40px] flex flex-col md:flex-row justify-between items-center md:items-end border-b-4 border-blue-600 gap-6">
+            <div>
+                <h1 class="text-4xl font-black italic uppercase">Welcome Back, <span id="user-name-display" class="text-blue-600">Boss</span></h1>
+                <p class="text-slate-500 font-bold uppercase text-xs mt-2 tracking-widest">System Status: <span class="text-green-500">Active & Syncing</span></p>
             </div>
-            <div class="glass p-10 rounded-[40px] border-white">
-                <div class="w-12 h-12 bg-green-100 text-green-600 rounded-2xl flex items-center justify-center mb-6 text-xl font-black">📱</div>
-                <h3 class="font-black text-xl mb-4 italic">WhatsApp Drip</h3>
-                <p class="text-sm text-slate-500 font-medium leading-relaxed">Reach customers where they are with a 98% open rate. Multi-touch sequences across WhatsApp, Email, and SMS for maximum potential.</p>
-            </div>
-            <div class="glass p-10 rounded-[40px] border-white">
-                <div class="w-12 h-12 bg-yellow-100 text-yellow-600 rounded-2xl flex items-center justify-center mb-6 text-xl font-black">🎟️</div>
-                <h3 class="font-black text-xl mb-4 italic">Automated Coupons</h3>
-                <p class="text-sm text-slate-500 font-medium leading-relaxed">Dynamic RECOVER10 codes triggered at the 48h stage. Smart coupon engine adjusts discount depth based on customer lifetime value.</p>
+            <div class="text-center md:text-right">
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Total Recovered Revenue</p>
+                <p class="text-4xl font-black text-slate-900">$12,450.00</p>
             </div>
         </div>
-    </section>
+    </header>
 
-    <section id="calculator" class="py-24 px-6 bg-white/50 border-y border-slate-100">
-        <div class="max-w-5xl mx-auto glass rounded-[48px] p-8 md:p-16 card-shadow border border-white">
-            <div class="text-center mb-16">
-                <span class="text-blue-600 font-black text-[10px] uppercase tracking-[0.3em]">Calculate how much revenue you could recover with RRLabs</span>
-                <h2 class="text-4xl font-black tracking-tight mt-2 italic">ROI Calculator</h2>
-            </div>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <div class="space-y-8">
-                    <div>
-                        <label class="block text-[11px] font-black text-slate-400 uppercase tracking-widest mb-3">Monthly Store Revenue (USD)</label>
-                        <div class="relative">
-                            <span class="absolute left-6 top-1/2 -translate-y-1/2 text-2xl font-black text-slate-300">$</span>
-                            <input type="number" id="monthlyRevenue" value="10000" class="w-full bg-slate-50 border border-slate-200 rounded-3xl pl-12 pr-6 py-6 text-3xl font-black focus:outline-none focus:ring-4 focus:ring-blue-500/10 transition">
-                        </div>
-                    </div>
-                    <div class="p-8 bg-blue-600 rounded-[32px] text-white shadow-xl shadow-blue-500/20">
-                        <p class="text-xs font-black uppercase opacity-80 mb-1">Potential Recovery (20%)</p>
-                        <span class="text-5xl font-black" id="potentialRecovery">$2,000</span>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 gap-6">
-                    <div class="flex justify-between items-center p-6 bg-slate-50 rounded-2xl">
-                        <span class="text-slate-500 font-bold">RRLabs Cost</span>
-                        <div class="text-right"><p class="text-slate-900 font-black text-xl" id="rrlabsCost">$79</p><p class="text-[10px] text-slate-400 font-bold italic">$29 plan + $50 success fee</p></div>
-                    </div>
-                    <div class="flex justify-between items-center p-6 bg-green-50 rounded-2xl">
-                        <span class="text-green-700 font-bold">Your Net Recovery</span>
-                        <p class="text-green-600 font-black text-xl" id="netRecovery">$1,921</p>
-                    </div>
-                    <div class="pt-6 border-t border-slate-100 text-center lg:text-left">
-                        <p class="text-[10px] font-black text-slate-400 uppercase mb-1 tracking-widest">Expected ROI</p>
-                        <p class="text-6xl font-black text-blue-600 tracking-tighter" id="roiPercentage">3076%</p>
-                    </div>
-                </div>
-            </div>
-            <div class="mt-12 p-6 bg-slate-900 text-slate-400 rounded-3xl text-[10px] font-medium leading-relaxed italic text-center">
-                Estimates assume conservative 50% conversion. Actual recovery may vary based on product, audience, and messaging.
+    <section data-role="admin" class="px-6 max-w-7xl mx-auto mt-10">
+        <div class="bg-red-50 border-2 border-red-200 p-6 rounded-3xl">
+            <h3 class="text-red-600 font-black text-xs uppercase tracking-widest mb-4 flex items-center gap-2">
+                <span class="animate-pulse">●</span> God Mode: System Overrides
+            </h3>
+            <div class="flex flex-wrap gap-4">
+                <button class="bg-red-600 text-white px-4 py-2 rounded-lg font-bold text-[10px] uppercase">Client Logs</button>
+                <button class="bg-slate-900 text-white px-4 py-2 rounded-lg font-bold text-[10px] uppercase">Predictive AI Sync</button>
+                <button class="bg-white border border-red-200 text-red-600 px-4 py-2 rounded-lg font-bold text-[10px] uppercase italic">System Overrides</button>
             </div>
         </div>
     </section>
 
-    <section id="pricing" class="py-32 px-6 max-w-[90rem] mx-auto text-center">
-        <h2 class="text-4xl font-black tracking-tighter mb-4 italic">Simple, Transparent Pricing</h2>
-        <p class="text-slate-500 font-medium mb-16 italic">All paid plans include 5% success fee on recovered revenue only. No hidden charges.</p>
+    <section id="pricing" class="py-24 px-6 max-w-[95rem] mx-auto text-center">
+        <h2 class="text-4xl font-black tracking-tighter mb-16 italic uppercase">
+            <span data-role="admin" class="text-red-600 mr-2">[Admin Edit Mode]</span>Simple Pricing
+        </h2>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            <div class="glass p-8 rounded-[32px] flex flex-col justify-between border-slate-200 pricing-card">
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            <div class="glass p-8 rounded-[32px] pricing-card">
+                <div data-role="admin" class="admin-badge">Tier 01</div>
                 <div>
-                    <h3 class="font-black text-lg mb-1 italic">Free</h3>
-                    <p class="text-[10px] font-black text-slate-400 uppercase mb-6 italic italic">Perfect for testing</p>
-                    <div class="mb-8"><span class="text-3xl font-black">$0</span><span class="text-slate-400 font-bold">/mo</span></div>
-                    <ul class="text-[11px] font-bold text-slate-600 space-y-3 mb-8 text-left">
-                        <li>✓ 50 attempts/month</li>
+                    <h3 class="font-black text-xs text-blue-600 mb-2 uppercase tracking-widest italic">Tier 01</h3>
+                    <h2 class="text-2xl font-black mb-4 italic uppercase">Free</h2>
+                    <div class="mb-8"><span class="text-4xl font-black">$0</span></div>
+                    <ul class="text-[11px] font-bold text-slate-500 space-y-4 mb-8 text-left uppercase italic leading-loose">
+                        <li>✓ 50 attempts/mo</li>
                         <li>✓ Basic AI Content</li>
-                        <li>✓ Webhook integration</li>
-                        <li>✓ Dashboard access</li>
-                        <li>✓ No success fee</li>
+                        <li>✓ Email Support</li>
                     </ul>
                 </div>
-                <button onclick="toggleAuth()" class="py-3 bg-slate-100 rounded-xl font-black text-[10px] uppercase tracking-widest">Get Started</button>
+                <button onclick="handlePricingAction('free')" class="w-full py-4 bg-slate-100 rounded-xl font-black text-[10px] uppercase tracking-widest">Select Plan</button>
             </div>
-            <div class="glass p-8 rounded-[32px] flex flex-col justify-between border-blue-500 relative bg-white scale-105 z-10 shadow-2xl pricing-card">
-                <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white px-4 py-1 rounded-full text-[9px] font-black uppercase tracking-widest">Best Value</div>
-                <div>
-                    <h3 class="font-black text-lg mb-1 text-blue-600 italic">Standard</h3>
-                    <p class="text-[10px] font-black text-slate-400 uppercase mb-6 italic italic">Growing stores</p>
-                    <div class="mb-8"><span class="text-3xl font-black">$29</span><span class="text-slate-400 font-bold">/mo</span></div>
-                    <ul class="text-[11px] font-bold text-slate-600 space-y-3 mb-8 text-left">
-                        <li>✓ 350 attempts/month</li>
-                        <li>✓ + 5% success fee</li>
-                        <li class="text-blue-600">✓ Gemini AI Personalization</li>
-                        <li>✓ WhatsApp Drip</li>
-                        <li>✓ Coupon automation</li>
-                    </ul>
-                </div>
-                <button onclick="toggleAuth()" class="py-3 bg-blue-600 text-white rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-blue-500/20">Get Started</button>
-            </div>
-            <div class="glass p-8 rounded-[32px] flex flex-col justify-between border-slate-200 pricing-card">
-                <div>
-                    <h3 class="font-black text-lg mb-1 italic">Premium</h3>
-                    <p class="text-[10px] font-black text-slate-400 uppercase mb-6 italic italic">Scaling business</p>
-                    <div class="mb-8"><span class="text-3xl font-black">$99</span><span class="text-slate-400 font-bold">/mo</span></div>
-                    <ul class="text-[11px] font-bold text-slate-600 space-y-3 mb-8 text-left">
-                        <li>✓ 1,050 attempts/month</li>
-                        <li>✓ + 5% success fee</li>
-                        <li>✓ White-label branding</li>
-                        <li>✓ Team management</li>
-                        <li>✓ API access</li>
-                    </ul>
-                </div>
-                <button onclick="toggleAuth()" class="py-3 bg-slate-900 text-white rounded-xl font-black text-[10px] uppercase tracking-widest">Get Started</button>
-            </div>
-            <div class="glass p-8 rounded-[32px] flex flex-col justify-between border-slate-200 pricing-card">
-                <div>
-                    <h3 class="font-black text-lg mb-1 italic">Enterprise</h3>
-                    <p class="text-[10px] font-black text-slate-400 uppercase mb-6 italic italic">High-volume stores</p>
-                    <div class="mb-8"><span class="text-3xl font-black">$299</span><span class="text-slate-400 font-bold">/mo</span></div>
-                    <ul class="text-[11px] font-bold text-slate-600 space-y-3 mb-8 text-left">
-                        <li>✓ 3,550 attempts/month</li>
-                        <li>✓ + 5% success fee</li>
-                        <li>✓ Dedicated Manager</li>
-                        <li>✓ Custom AI Training</li>
-                        <li>✓ SLA Guarantee</li>
-                    </ul>
-                </div>
-                <a href="mailto:support@rrlabs.online" class="py-3 bg-slate-100 rounded-xl font-black text-[10px] uppercase tracking-widest text-center">Contact Sales</a>
-            </div>
-            <div class="glass p-8 rounded-[32px] flex flex-col justify-between border-slate-200 pricing-card">
-                <div>
-                    <h3 class="font-black text-lg mb-1 italic">Custom</h3>
-                    <p class="text-[10px] font-black text-slate-400 uppercase mb-6 italic italic">Enterprise needs</p>
-                    <div class="mb-8"><span class="text-xl font-black">Custom</span></div>
-                    <ul class="text-[11px] font-bold text-slate-600 space-y-3 mb-8 text-left">
-                        <li>✓ Unlimited attempts</li>
-                        <li>✓ Custom infrastructure</li>
-                        <li>✓ Dedicated support team</li>
-                        <li>✓ Custom integrations</li>
-                        <li>✓ Custom SLA</li>
-                    </ul>
-                </div>
-                <a href="mailto:support@rrlabs.online" class="py-3 bg-slate-100 rounded-xl font-black text-[10px] uppercase tracking-widest text-center">Contact Support</a>
-            </div>
-        </div>
-        <p class="mt-10 text-[11px] text-slate-400 font-black uppercase tracking-widest italic italic">All plans start with a 14-day free trial. Free plan never expires.</p>
-    </section>
 
-    <section class="py-24 px-6 text-center max-w-4xl mx-auto">
-        <h2 class="text-4xl md:text-5xl font-black tracking-tight mb-6 italic">Ready to Start Recovering Revenue?</h2>
-        <p class="text-slate-500 font-medium mb-10 italic italic">Join hundreds of e-commerce stores already recovering abandoned carts with Gemini AI.</p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <button onclick="toggleAuth()" class="bg-blue-600 text-white px-10 py-5 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-blue-700 transition shadow-2xl shadow-blue-500/40">Start 14-Day Free Trial</button>
-            <a href="mailto:support@rrlabs.online" class="glass px-10 py-5 rounded-2xl font-black text-xs uppercase tracking-widest flex items-center justify-center">Contact Support</a>
+            <div class="glass p-8 rounded-[32px] pricing-card border-blue-500 bg-white scale-105 z-10 shadow-2xl">
+                <div data-role="admin" class="admin-badge">Tier 02</div>
+                <div>
+                    <h3 class="font-black text-xs text-blue-600 mb-2 uppercase tracking-widest italic">Tier 02</h3>
+                    <h2 class="text-2xl font-black mb-4 italic uppercase text-blue-600">Standard</h2>
+                    <div class="mb-8"><span class="text-4xl font-black">$29</span></div>
+                    <ul class="text-[11px] font-bold text-slate-600 space-y-4 mb-8 text-left uppercase italic leading-loose">
+                        <li>✓ 350 attempts/mo</li>
+                        <li>✓ 5% success fee</li>
+                        <li class="text-blue-600 font-black">✓ Gemini AI Engine</li>
+                    </ul>
+                </div>
+                <button onclick="handlePricingAction('standard')" class="w-full py-4 bg-blue-600 text-white rounded-xl font-black text-[10px] uppercase tracking-widest">Get Started</button>
+            </div>
+
+            <div class="glass p-8 rounded-[32px] pricing-card">
+                <div data-role="admin" class="admin-badge">Tier 03</div>
+                <div>
+                    <h3 class="font-black text-xs text-blue-600 mb-2 uppercase tracking-widest italic">Tier 03</h3>
+                    <h2 class="text-2xl font-black mb-4 italic uppercase">Premium</h2>
+                    <div class="mb-8"><span class="text-4xl font-black">$99</span></div>
+                    <ul class="text-[11px] font-bold text-slate-500 space-y-4 mb-8 text-left uppercase italic leading-loose">
+                        <li>✓ 1,050 attempts/mo</li>
+                        <li>✓ Advanced Analytics</li>
+                        <li>✓ WhatsApp Drip</li>
+                    </ul>
+                </div>
+                <button onclick="handlePricingAction('premium')" class="w-full py-4 bg-slate-900 text-white rounded-xl font-black text-[10px] uppercase tracking-widest">Select Plan</button>
+            </div>
+
+            <div class="glass p-8 rounded-[32px] pricing-card">
+                <div data-role="admin" class="admin-badge">Tier 04</div>
+                <div>
+                    <h3 class="font-black text-xs text-blue-600 mb-2 uppercase tracking-widest italic">Tier 04</h3>
+                    <h2 class="text-2xl font-black mb-4 italic uppercase">Enterprise</h2>
+                    <div class="mb-8"><span class="text-4xl font-black">$299</span></div>
+                    <ul class="text-[11px] font-bold text-slate-500 space-y-4 mb-8 text-left uppercase italic leading-loose">
+                        <li>✓ 3,550 attempts/mo</li>
+                        <li>✓ Priority AI Tasks</li>
+                        <li>✓ Dedicated Manager</li>
+                    </ul>
+                </div>
+                <button onclick="handlePricingAction('enterprise')" class="w-full py-4 bg-slate-900 text-white rounded-xl font-black text-[10px] uppercase tracking-widest">Select Plan</button>
+            </div>
+
+            <div class="glass p-8 rounded-[32px] pricing-card">
+                <div data-role="admin" class="admin-badge">Tier 05</div>
+                <div>
+                    <h3 class="font-black text-xs text-blue-600 mb-2 uppercase tracking-widest italic">Tier 05</h3>
+                    <h2 class="text-2xl font-black mb-4 italic uppercase">Custom</h2>
+                    <div class="mb-8"><span class="text-xl font-black text-slate-400 italic">Contact Us</span></div>
+                    <ul class="text-[11px] font-bold text-slate-500 space-y-4 mb-8 text-left uppercase italic leading-loose">
+                        <li>✓ Unlimited attempts</li>
+                        <li>✓ Dedicated Instance</li>
+                        <li>✓ On-premise API</li>
+                    </ul>
+                </div>
+                <a href="mailto:support@rrlabs.online" class="w-full py-4 border border-slate-200 rounded-xl font-black text-[10px] uppercase tracking-widest text-center italic">Email Sales</a>
+            </div>
         </div>
     </section>
 
     <footer class="bg-white border-t border-slate-100 pt-24 pb-12 px-6">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-20">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
             <div class="col-span-1">
                 <div class="flex items-center gap-3 mb-6">
-                    <img src="Rrlabs_Logo_transparent.png" class="h-8 w-8 rounded-lg object-contain">
-                    <span class="font-black text-xl tracking-tighter text-slate-900 leading-none">REVENUE RECOVERY LABS</span>
+                    <img src="logo.png" class="h-10 w-10 rounded-lg object-contain">
+                    <span class="font-black text-xl tracking-tighter italic uppercase">REVENUE RECOVERY LABS</span>
                 </div>
-                <p class="text-sm text-slate-500 leading-relaxed font-medium mb-6 italic italic">Enterprise AI Revenue Recovery. Recovering abandoned revenue using the world's most advanced Gemini AI.</p>
-                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
-                    <p class="text-[9px] font-black text-slate-400 uppercase mb-2 italic tracking-widest">Payment & Compliance</p>
-                    <p class="text-[10px] font-bold text-slate-600 leading-tight">Merchant of Record: Payments securely processed by <span class="text-blue-600">Lemon Squeezy</span>.</p>
-                </div>
+                <p class="text-[11px] font-bold text-slate-500 leading-relaxed uppercase italic">AI-Driven Revenue Recovery for high-growth SaaS and E-commerce. Powered by Gemini Pro.</p>
             </div>
+
             <div>
-                <h4 class="font-black uppercase text-[10px] tracking-[0.2em] text-blue-600 mb-8 italic italic">Legal</h4>
-                <ul class="space-y-4 text-xs font-black text-slate-600 uppercase tracking-widest">
-                    <li><a href="privacy.html" class="hover:text-blue-600 transition">Privacy Policy</a></li>
-                    <li><a href="terms.html" class="hover:text-blue-600 transition">Terms of Service</a></li>
-                    <li><a href="refund.html" class="hover:text-blue-600 transition">Refund Policy</a></li>
-                    <li><a href="cookies.html" class="hover:text-blue-600 transition">Cookie Policy</a></li>
+                <h4 class="font-black text-[10px] text-blue-600 uppercase tracking-[0.2em] mb-8 italic underline decoration-blue-100 underline-offset-8">Support</h4>
+                <ul class="space-y-4 text-[11px] font-bold text-slate-900 uppercase italic">
+                    <li>+880 1557-749217</li>
+                    <li class="lowercase text-blue-600">support@rrlabs.online</li>
                 </ul>
             </div>
-            <div>
-                <h4 class="font-black uppercase text-[10px] tracking-[0.2em] text-blue-600 mb-8 italic italic">Support</h4>
-                <div class="space-y-4">
-                    <p class="text-sm font-black text-slate-900">+880 1557-749217</p>
-                    <a href="mailto:support@rrlabs.online" class="text-xs font-bold text-blue-600 italic">support@rrlabs.online</a>
-                    <a href="#" class="block text-xs font-black text-green-600 uppercase italic">WhatsApp Support →</a>
+
+            <div data-role="admin" class="col-span-1">
+                <h4 class="font-black text-[10px] text-red-600 uppercase tracking-[0.2em] mb-8 italic">Quick Switch</h4>
+                <div class="flex flex-col gap-2">
+                    <button onclick="loginAs('public')" class="bg-slate-100 px-3 py-1 rounded text-[8px] font-bold uppercase">Public View</button>
+                    <button onclick="loginAs('client')" class="bg-slate-100 px-3 py-1 rounded text-[8px] font-bold uppercase">Client View</button>
                 </div>
             </div>
-            <div>
-                <h4 class="font-black uppercase text-[10px] tracking-[0.2em] text-blue-600 mb-8 italic italic italic">Headquarters</h4>
-                <p class="text-[10px] text-slate-400 font-bold leading-relaxed uppercase italic">
-                    60, Chowhaddi, Dotto Kendua-7901<br>
-                    Madaripur Sadar, Madaripur<br>
-                    Dhaka, Bangladesh
-                </p>
-            </div>
         </div>
-        <div class="max-w-7xl mx-auto pt-10 border-t border-slate-50 text-center">
-            <p class="text-[9px] text-slate-300 font-black uppercase tracking-[0.2em]">© 2026 REVENUE RECOVERY LABS. ALL RIGHTS RESERVED. POWERED BY GEMINI AI • BUILT WITH NEXT.JS, SUPABASE & VERCEL</p>
+
+        <div class="max-w-7xl mx-auto pt-10 border-t border-slate-50 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest italic">© 2026 RRLabs. All Rights Reserved.</p>
+            <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest italic">Crafted by Palash Sarker</p>
         </div>
     </footer>
 
-    <div id="auth-modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-6">
-        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="toggleAuth()"></div>
-        <div class="glass max-w-md w-full rounded-[40px] p-10 relative shadow-2xl border border-white">
-            <h2 class="text-3xl font-black tracking-tight mb-2 italic">Access RRLabs</h2>
-            <p class="text-slate-500 text-sm mb-8 font-medium italic italic">Recover revenue with Gemini AI</p>
-            <div class="space-y-4">
-                <button onclick="loginMock()" class="w-full flex items-center justify-center gap-3 bg-white border border-slate-200 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-50 transition shadow-sm">
-                    <img src="https://www.google.com/favicon.ico" class="w-4 h-4" alt="Google"> Continue with Google
-                </button>
-                <div class="relative py-4 text-center">
-                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Or use email</span>
-                </div>
-                <input type="email" placeholder="Email Address" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm font-bold focus:outline-none focus:ring-4 focus:ring-blue-500/10 transition">
-                <input type="password" placeholder="Password" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm font-bold focus:outline-none focus:ring-4 focus:ring-blue-500/10 transition">
-                <button onclick="loginMock()" class="w-full bg-blue-600 text-white py-5 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-blue-700 transition">Sign In</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="pwa-banner" class="fixed bottom-8 left-6 right-6 z-[150] max-w-md mx-auto">
-        <div class="bg-slate-900 text-white p-6 rounded-[32px] shadow-2xl flex items-center justify-between border border-slate-700">
-            <div class="flex items-center gap-4">
-                <img src="Rrlabs_Logo_transparent.png" class="w-12 h-12 rounded-xl object-contain">
-                <div><p class="font-black text-sm uppercase tracking-tight">Install RRLabs App</p><p class="text-[10px] text-slate-400 font-bold italic">Faster access & real-time alerts</p></div>
-            </div>
-            <button id="install-btn" class="bg-blue-600 px-5 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest">Install</button>
-        </div>
-    </div>
-
-    <script>
-        // Service Worker Registration
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(reg => console.log('Service Worker Registered'))
-                    .catch(err => console.log('Service Worker Failed', err));
-            });
-        }
-
-        let isLoggedIn = false;
-        let deferredPrompt;
-
-        const links = {
-            public: [
-                { name: 'Dashboard', link: 'dashboard.html' },
-                { name: 'Analytics', link: 'analytics.html' },
-                { name: 'Pricing', link: '#pricing' },
-                { name: 'Blog', link: 'blog.html' }
-            ],
-            private: [
-                { name: 'Dashboard', link: 'dashboard.html' },
-                { name: 'Analytics', link: 'analytics.html' },
-                { name: 'Records', link: 'records.html' },
-                { name: 'Packages', link: 'billing.html' },
-                { name: 'Setup', link: 'setup.html' },
-                { name: 'Blog', link: 'blog.html' }
-            ]
-        };
-
-        function updateNav() {
-            const currentLinks = isLoggedIn ? links.private : links.public;
-            document.getElementById('desktop-links').innerHTML = currentLinks.map(l => `<a href="${l.link}" class="text-[11px] font-black uppercase tracking-widest text-slate-500 hover:text-blue-600 transition italic italic">${l.name}</a>`).join('');
-            
-            document.getElementById('auth-buttons').innerHTML = isLoggedIn ? 
-                `<a href="dashboard.html" class="bg-blue-50 text-blue-600 px-5 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest italic italic">Dashboard</a>` :
-                `<button onclick="toggleAuth()" class="text-xs font-black uppercase tracking-widest text-slate-500 hover:text-blue-600 transition">Login</button>`;
-
-            document.getElementById('menu-grid').innerHTML = `
-                <div>
-                    <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-6 italic">Navigation</p>
-                    <ul class="space-y-4">
-                        ${currentLinks.map(l => `<li><a href="${l.link}" class="text-2xl font-black text-slate-900 hover:text-blue-600 transition tracking-tighter">${l.name}</a></li>`).join('')}
-                    </ul>
-                </div>
-                <div class="pt-8 md:pt-0 md:border-l md:pl-12 border-slate-100">
-                    <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-6 italic italic">Account Details</p>
-                    ${isLoggedIn ? `
-                        <div class="flex items-center gap-4 mb-6">
-                            <div class="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center font-black text-blue-600 text-xl">P</div>
-                            <div>
-                                <p class="font-black text-slate-900">Palash Sarker</p>
-                                <p class="text-[10px] font-bold text-slate-400 italic mt-0.5">palashsarker1993@gmail.com</p>
-                            </div>
-                        </div>
-                        <button onclick="logoutMock()" class="text-red-500 font-black uppercase text-xs tracking-widest italic">Logout Account →</button>
-                    ` : `<button onclick="toggleAuth()" class="bg-slate-900 text-white w-full py-4 rounded-2xl font-black text-xs uppercase tracking-widest">Login Now</button>`}
-                </div>
-            `;
-        }
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            setTimeout(() => { document.getElementById('pwa-banner').classList.add('show'); }, 5000);
-        });
-
-        document.getElementById('install-btn').addEventListener('click', () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choice) => {
-                    if (choice.outcome === 'accepted') document.getElementById('pwa-banner').classList.remove('show');
-                    deferredPrompt = null;
-                });
-            }
-        });
-
-        function updateROI() {
-            const rev = parseFloat(document.getElementById('monthlyRevenue').value) || 0;
-            const recovery = rev * 0.20;
-            const totalCost = 29 + (recovery * 0.05);
-            const net = recovery - totalCost;
-            const roi = totalCost > 0 ? (net / totalCost) * 100 : 0;
-            document.getElementById('potentialRecovery').innerText = `$${recovery.toLocaleString()}`;
-            document.getElementById('rrlabsCost').innerText = `$${totalCost.toFixed(0)}`;
-            document.getElementById('netRecovery').innerText = `$${net.toFixed(0)}`;
-            document.getElementById('roiPercentage').innerText = `${roi.toFixed(0)}%`;
-        }
-
-        document.getElementById('monthlyRevenue').addEventListener('input', updateROI);
-        document.getElementById('menu-toggle').addEventListener('click', () => document.getElementById('mobile-menu').classList.toggle('active'));
-        function toggleAuth() { document.getElementById('auth-modal').classList.toggle('hidden'); }
-        function loginMock() { isLoggedIn = true; toggleAuth(); updateNav(); }
-        function logoutMock() { isLoggedIn = false; updateNav(); }
-        
-        window.onload = () => { updateROI(); updateNav(); };
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
