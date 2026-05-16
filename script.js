@@ -1,121 +1,58 @@
-/**
- * Revenue Recovery Labs - System Logic Engine
- * All Necessary Logic for Multi-Tenant Support & Roles
- */
-
-// 1. System State
-const state = {
-    user: {
-        role: localStorage.getItem('rrlabs_session_role') || 'public',
-        name: 'Palash Sarker',
-        project: 'Revenue Recovery Labs'
-    }
+const systemState = {
+    role: localStorage.getItem('rrlabs_role') || 'public',
+    user: 'Palash Sarker'
 };
 
-// 2. Main Render Function
-function updateSystemUI() {
-    const role = state.user.role;
+function render() {
+    const role = systemState.role;
     
-    // Hide all role-based elements first
+    // Reset Views
     document.querySelectorAll('[data-role]').forEach(el => {
         el.style.setProperty('display', 'none', 'important');
     });
 
-    // Show elements based on current role
+    // Active Role View
     if (role === 'public') {
-        document.querySelectorAll('[data-role="public"]').forEach(el => {
-            el.style.display = 'block';
-        });
-    }
-
-    if (role === 'client' || role === 'admin') {
-        document.querySelectorAll('[data-role="private"]').forEach(el => {
-            el.style.display = 'block';
-        });
-        
-        // Update Dynamic UI Labels
-        const nameLabel = document.getElementById('user-name-display');
-        if (nameLabel) nameLabel.innerText = role === 'admin' ? "Chief Architect" : state.user.name;
+        document.querySelectorAll('[data-role="public"]').forEach(el => el.style.display = 'block');
+    } else {
+        document.querySelectorAll('[data-role="private"]').forEach(el => el.style.display = 'block');
+        const display = document.getElementById('user-name-display');
+        if (display) display.innerText = systemState.user;
     }
 
     if (role === 'admin') {
-        document.querySelectorAll('[data-role="admin"]').forEach(el => {
-            el.style.display = 'block';
-        });
-        
-        // Add visual cues for Admin (God Mode)
-        document.querySelectorAll('.pricing-card').forEach(card => {
-            card.classList.add('admin-border');
-        });
-    } else {
-        document.querySelectorAll('.pricing-card').forEach(card => {
-            card.classList.remove('admin-border');
-        });
+        document.querySelectorAll('[data-role="admin"]').forEach(el => el.style.display = 'block');
     }
 
-    renderAuthButtons();
+    renderNav();
 }
 
-// 3. Authentication & Role Switching
-window.loginAs = function(role) {
-    console.log(`System: Switching to ${role} mode...`);
-    state.user.role = role;
-    localStorage.setItem('rrlabs_session_role', role);
-    updateSystemUI();
-};
-
-window.logout = function() {
-    state.user.role = 'public';
-    localStorage.removeItem('rrlabs_session_role');
-    updateSystemUI();
-};
-
-// 4. Navigation UI Handler
-function renderAuthButtons() {
+function renderNav() {
     const container = document.getElementById('auth-buttons');
     if (!container) return;
 
-    if (state.user.role === 'public') {
-        container.innerHTML = `
-            <button onclick="loginAs('client')" class="text-xs font-black uppercase text-slate-500 hover:text-blue-600 transition italic">Login</button>
-            <button onclick="loginAs('client')" class="bg-slate-900 text-white px-6 py-2.5 rounded-xl font-black text-[10px] uppercase italic tracking-widest shadow-xl">Get Started</button>
-        `;
+    if (systemState.role === 'public') {
+        container.innerHTML = `<button onclick="loginAs('client')" class="bg-blue-600 text-white px-6 py-2.5 rounded-xl font-black text-[10px] uppercase italic">Login</button>`;
     } else {
-        container.innerHTML = `
-            <div class="flex items-center gap-3">
-                <div class="flex flex-col items-end hidden md:flex">
-                    <span class="text-[9px] font-black uppercase text-blue-600 leading-none">${state.user.role} mode</span>
-                    <span class="text-[8px] font-bold text-slate-400 uppercase tracking-tighter">System Active</span>
-                </div>
-                <button onclick="logout()" class="bg-red-50 text-red-600 border border-red-100 px-5 py-2.5 rounded-xl font-black text-[10px] uppercase italic">Exit Session</button>
-            </div>
-        `;
+        container.innerHTML = `<button onclick="logout()" class="bg-slate-900 text-white px-6 py-2.5 rounded-xl font-black text-[10px] uppercase italic">Logout</button>`;
     }
 }
 
-// 5. Pricing Action Handler
-window.handlePricing = function(plan) {
-    if (state.user.role === 'public') {
-        alert(`Boss, redirecting to login to secure your ${plan} plan!`);
-        loginAs('client');
-    } else {
-        console.log(`Action: Initiating checkout for ${plan} via Lemon Squeezy API...`);
-        // Logic for redirecting to your Lemon Squeezy checkout link
-        // Example: window.location.href = `https://rrlabs.lemonsqueezy.com/checkout/buy/${planId}`;
-    }
+window.loginAs = (role) => {
+    systemState.role = role;
+    localStorage.setItem('rrlabs_role', role);
+    render();
 };
 
-// 6. Bootstrap System
-document.addEventListener('DOMContentLoaded', () => {
-    updateSystemUI();
-    
-    // Add smooth scroll for pricing link
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
-    });
-});
+window.logout = () => {
+    systemState.role = 'public';
+    localStorage.removeItem('rrlabs_role');
+    render();
+};
+
+window.handlePricing = (plan) => {
+    alert(`Initializing Recovery Logic for ${plan} plan... Check Console.`);
+    console.log(`Action: Forwarding to Lemon Squeezy for ${plan} Tier.`);
+};
+
+document.addEventListener('DOMContentLoaded', render);
